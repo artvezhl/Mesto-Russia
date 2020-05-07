@@ -40,14 +40,17 @@ const popupToggle = () => popup.classList.toggle('popup_is-opened');
 
 // метод - обработчик попапа, меняющий текст плейсхолдеров в зависимости от того какая кнопка нажата в зависимости от того какая кнопка нажата
 const popupHandler = function (event) {
+  const title = document.querySelector('.popup__title');
   const name = document.querySelector('.popup__input_type_name');
   const job = document.querySelector('.popup__input_type_link-url');
   if (event.target.classList.contains('user-info__edit-button')) {
+    title.textContent = 'Редактировать профиль';
     name.setAttribute('placeholder', 'Имя');
     job.setAttribute('placeholder', 'О себе');
     job.setAttribute('name', 'about');
   };
   if (event.target.classList.contains('user-info__button')) {
+    title.textContent = 'Новое место';
     name.setAttribute('placeholder', 'Название');
     job.setAttribute('placeholder', 'Ссылка на картинку');
     job.setAttribute('name', 'link');
