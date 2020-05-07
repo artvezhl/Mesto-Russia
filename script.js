@@ -42,6 +42,7 @@ const popupToggle = () => popup.classList.toggle('popup_is-opened');
 const popupHandler = function (event) {
   const name = document.querySelector('.popup__input_type_name');
   const job = document.querySelector('.popup__input_type_link-url');
+  const form = document.querySelector('.popup__form');
   if (event.target.classList.contains('user-info__edit-button')) {
     name.setAttribute('placeholder', 'Имя');
     job.setAttribute('placeholder', 'О себе');
@@ -86,12 +87,23 @@ const changeNameAndJob = function(event) {
   };
 };
 
-// метод - обработчик для лайков и удаления карточек
+// метод - обработчик для лайков, вывода картинок и удаления карточек
 const cardHandler = function(event) {
   if (event.target.classList.contains('place-card__like-icon'))
     return event.target.classList.toggle('place-card__like-icon_liked');
   if (event.target.classList.contains('place-card__delete-icon'))
     return places.removeChild(event.target.closest('div.place-card'));
+  if (event.target.classList.contains('place-card__image')) {
+    const popupContent = document.querySelector('.popup__content');
+    const image = document.querySelector('.popup__image');
+    const link = event.target.getAttribute('style');
+    //const cross = document.querySelector('.popup__close');
+    popupContent.setAttribute('style', 'display: none');
+    image.setAttribute('style', `display: inline; ${link};`);
+    //cross.setAttribute('style', 'position: relative; top: 0; right: 0;')
+    //console.log(cross);
+    return popupToggle();
+  }
 };
 
 // метод - обработчик форм, который запускает определенное функциональное выражение
@@ -102,22 +114,28 @@ const formHandler = function(event) {
   if (attribute === 'О себе')
     changeNameAndJob(event);
   if (attribute === 'Ссылка на картинку')
-      addNewCard(event);
+    addNewCard(event);
 };
 
 // слушатель события реализует функцию ставить лайки карточкам
 places.addEventListener('click', cardHandler);
 
-// слушатель события при открытии формы вызывает функцию popupToggle (добавление класса для открытия формы)
+// слушатель события при открытии формы вызывает функцию popupToggle
+// в целях добавления новой карточки
 addCardButton.addEventListener('click', popupHandler);
 
-// слушатель события при закрытии формы вызывает функцию popupToggle (удаление класса для закрытия формы)
+// слушатель события при закрытии формы вызывает функцию popupToggle
+// (удаление класса для закрытия формы)
 closePopupButton.addEventListener('click', popupToggle);
 
-// слушатель события при отправке формы вызывает функцию, которая добавляет новую не пустую карточку в разметку и закрывает форму
+// слушатель события при отправке формы вызывает функцию, которая добавляет
+// новую не пустую карточку в разметку и закрывает форму
 form.addEventListener('submit', formHandler);
 
+// слушатель события при открытии формы вызывает функцию popupHandler
+// в целях изменения информации вверху страницы о человеке и роде деятельности
 editInfoButton.addEventListener('click', popupHandler);
+
 
 // метод добавляет стартовые карточки в разметку
 addStartCards();
