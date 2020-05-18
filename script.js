@@ -39,27 +39,35 @@ const addStartCards = function() {
 function popupToggle () {
   const popupCard = document.querySelector('.popup-card');
   const popupProfile = document.querySelector('.popup-profile');
+  const popupImage = document.querySelector('.popup-image');
 
   function popupProfileToggle () {
     popupProfile.classList.toggle('popup_is-opened');
-  };
+  }
   function popupCardToggle () {
     popupCard.classList.toggle('popup_is-opened');
-  };
+  }
+  function popupImageToggle () {
+    popupImage.classList.toggle('popup_is-opened');
+  }
   function popupClose(event) {
     const crossParent = event.target.parentElement.parentElement;
     if (crossParent == popupCard)
-       popupCardToggle();
+      popupCardToggle();
     if (crossParent == popupProfile)
-       popupProfileToggle();
-  };
+      popupProfileToggle();
+    if (crossParent == popupImage)
+      popupImageToggle();
+  }
 
   return {
     popupCardToggle,
     popupProfileToggle,
+    popupImageToggle,
     popupClose,
   }
 };
+
 // присваиваем функцию popupToggle константе popupHandler
 const popupHandler = popupToggle();
 
@@ -71,7 +79,7 @@ const addNewCard = function(event) {
     addCard(name.value, link.value);
     popupHandler.popupCardToggle();
     NewCardForm.reset();
-  };
+  }
 };
 
 // функциональное выражение меняет имя и род деятельности вверху страницы
@@ -91,7 +99,7 @@ const changeNameAndJob = function(event) {
     changeInfo(name.value, about.value);
     popupHandler.popupProfileToggle();
     editForm.reset();
-  };
+  }
 };
 
 // метод - обработчик для лайков, вывода картинок и удаления карточек
@@ -101,12 +109,11 @@ const cardHandler = function(event) {
   if (event.target.classList.contains('place-card__delete-icon'))
     return places.removeChild(event.target.closest('div.place-card'));
   if (event.target.classList.contains('place-card__image')) {
-    const popupContent = document.querySelector('.popup__content');
     const image = document.querySelector('.popup__image');
-    const link = event.target.getAttribute('style');
-    popupContent.setAttribute('style', 'display: none');
-    image.setAttribute('style', `display: inline; ${link};`);
-    return popupToggle();
+    const link = event.target.getAttribute('style').slice(22, -1).replace(/"/g, "");
+    image.setAttribute('src', `${link}`);
+    console.log(link);
+    return popupHandler.popupImageToggle();
   }
 };
 
