@@ -13,3 +13,11 @@
     width: calc(100% - 60px);
   }
 }
+
+.popup__content_place_image {
+  width: max-content;
+  height: max-content;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 5px 5px;
+}
