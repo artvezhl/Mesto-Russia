@@ -1,8 +1,8 @@
 const places = document.querySelector('.places-list');
-const popup = document.querySelector('.popup');
+const popups = document.querySelectorAll('.popup');
 const addCardButton = document.querySelector('.user-info__button');
-const closePopupButton = document.querySelector('.popup__close');
-const form = document.forms.new;
+const newCardForm = document.forms.new;
+const editForm = document.forms.edit;
 const editInfoButton = document.querySelector('.user-info__edit-button');
 
 // функциональное выражение создает разметку карточек и возвращает эту разметку
@@ -28,42 +28,49 @@ const createCard = function (name, link) {
 // функциональное выражение используется для добавления карточек в разметку
 const addCard = (name, link) => places.appendChild(createCard(name, link));
 
-// функциональное выражение  используется для добавления стартовых карточек в разметку
+// функциональное выражение используется для добавления стартовых карточек в разметку
 const addStartCards = function() {
   for (let i = 0; i < initialCards.length; i++) {
     addCard(initialCards[i].name, initialCards[i].link);
-  };
+  }
 };
 
-// функциональное выражение добавляет/удаляет класс у формы, чтобы реализовать ее открытие/закрытие
-const popupToggle = () => popup.classList.toggle('popup_is-opened');
+// функция добавляет/удаляет класс у формы, чтобы реализовать ее открытие/закрытие
+function popupToggle () {
+  const popupCard = document.querySelector('.popup-card');
+  const popupProfile = document.querySelector('.popup-profile');
 
-// метод - обработчик попапа, меняющий текст плейсхолдеров в зависимости от того какая кнопка нажата в зависимости от того какая кнопка нажата
-const popupHandler = function (event) {
-  const name = document.querySelector('.popup__input_type_name');
-  const job = document.querySelector('.popup__input_type_link-url');
-  const form = document.querySelector('.popup__form');
-  if (event.target.classList.contains('user-info__edit-button')) {
-    name.setAttribute('placeholder', 'Имя');
-    job.setAttribute('placeholder', 'О себе');
-    job.setAttribute('name', 'about');
+  function popupProfileToggle () {
+    popupProfile.classList.toggle('popup_is-opened');
   };
-  if (event.target.classList.contains('user-info__button')) {
-    name.setAttribute('placeholder', 'Название');
-    job.setAttribute('placeholder', 'Ссылка на картинку');
-    job.setAttribute('name', 'link');
+  function popupCardToggle () {
+    popupCard.classList.toggle('popup_is-opened');
   };
-  popupToggle();
+  function popupClose(event) {
+    const crossParent = event.target.parentElement.parentElement;
+    if (crossParent == popupCard)
+       popupCardToggle();
+    if (crossParent == popupProfile)
+       popupProfileToggle();
+  };
+
+  return {
+    popupCardToggle,
+    popupProfileToggle,
+    popupClose,
+  }
 };
+// присваиваем функцию popupToggle константе popupHandler
+const popupHandler = popupToggle();
 
 // метод добавляет новую карточку
 const addNewCard = function(event) {
   event.preventDefault();
-  const { name, link } = form.elements;
+  const { name, link } = NewCardForm.elements;
   if (name.value.length !== 0 || link.value.length !== 0) {
     addCard(name.value, link.value);
-    popupToggle();
-    form.reset();
+    popupHandler.popupCardToggle();
+    NewCardForm.reset();
   };
 };
 
@@ -79,11 +86,11 @@ const changeInfo = function (name, job) {
 // и отправляет их в целях изменения имени и рода деятельности вверху страницы
 const changeNameAndJob = function(event) {
   event.preventDefault();
-  const { name, about } = form.elements;
+  const { name, about } = editForm.elements;
   if (name.value.length !== 0 || about.value.length !== 0) {
     changeInfo(name.value, about.value);
-    popupToggle();
-    form.reset();
+    popupHandler.popupProfileToggle();
+    editForm.reset();
   };
 };
 
@@ -97,24 +104,10 @@ const cardHandler = function(event) {
     const popupContent = document.querySelector('.popup__content');
     const image = document.querySelector('.popup__image');
     const link = event.target.getAttribute('style');
-    //const cross = document.querySelector('.popup__close');
     popupContent.setAttribute('style', 'display: none');
     image.setAttribute('style', `display: inline; ${link};`);
-    //cross.setAttribute('style', 'position: relative; top: 0; right: 0;')
-    //console.log(cross);
     return popupToggle();
   }
-};
-
-// метод - обработчик форм, который запускает определенное функциональное выражение
-// в зависимости от того, меняется ли имя на странице или добавляется новая карточка
-const formHandler = function(event) {
-  const attribute = event.target.children[1].getAttribute('placeholder');
-
-  if (attribute === 'О себе')
-    changeNameAndJob(event);
-  if (attribute === 'Ссылка на картинку')
-    addNewCard(event);
 };
 
 // слушатель события реализует функцию ставить лайки карточкам
@@ -122,20 +115,23 @@ places.addEventListener('click', cardHandler);
 
 // слушатель события при открытии формы вызывает функцию popupToggle
 // в целях добавления новой карточки
-addCardButton.addEventListener('click', popupHandler);
+addCardButton.addEventListener('click', popupHandler.popupCardToggle);
 
 // слушатель события при закрытии формы вызывает функцию popupToggle
 // (удаление класса для закрытия формы)
-closePopupButton.addEventListener('click', popupToggle);
+popups.forEach((elem) => elem.addEventListener('click', popupHandler.popupClose));
 
 // слушатель события при отправке формы вызывает функцию, которая добавляет
 // новую не пустую карточку в разметку и закрывает форму
-form.addEventListener('submit', formHandler);
+newCardForm.addEventListener('submit', addNewCard);
+
+// слушатель события при отправке формы вызывает функцию, которая
+// изменяет имя и род деятельности в шапке
+editForm.addEventListener('submit', changeNameAndJob);
 
 // слушатель события при открытии формы вызывает функцию popupHandler
 // в целях изменения информации вверху страницы о человеке и роде деятельности
-editInfoButton.addEventListener('click', popupHandler);
-
+editInfoButton.addEventListener('click', popupHandler.popupProfileToggle);
 
 // метод добавляет стартовые карточки в разметку
 addStartCards();
