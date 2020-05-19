@@ -74,11 +74,11 @@ const popupHandler = popupToggle();
 // метод добавляет новую карточку
 const addNewCard = function(event) {
   event.preventDefault();
-  const { name, link } = NewCardForm.elements;
+  const { name, link } = newCardForm.elements;
   if (name.value.length !== 0 || link.value.length !== 0) {
     addCard(name.value, link.value);
     popupHandler.popupCardToggle();
-    NewCardForm.reset();
+    newCardForm.reset();
   }
 };
 
@@ -95,6 +95,7 @@ const changeInfo = function (name, job) {
 const changeNameAndJob = function(event) {
   event.preventDefault();
   const { name, about } = editForm.elements;
+
   if (name.value.length !== 0 || about.value.length !== 0) {
     changeInfo(name.value, about.value);
     popupHandler.popupProfileToggle();
@@ -116,6 +117,81 @@ const cardHandler = function(event) {
     return popupHandler.popupImageToggle();
   }
 };
+
+// валидация форм
+const name = document.querySelector('#name');
+const about = document.querySelector('#about');
+const form = document.querySelector('#form');
+
+
+//TODO delete down
+const errorMessage = document.querySelector('#error-name');
+const inputs = Array.from(form.elements);
+console.log(inputs[1].nextElementSibling);
+// TODO delete up
+
+// функция валидации поля. Она принимает два аргумента: элемент поля и элемент ошибки.
+// Если поле прошло валидацию, ошибку следует скрыть. Если не прошло — показать.
+function checkInputValidity(inputElem, errorElem) {
+
+  if (!inputElem.checkValidity() && inputElem.value.length < 1) {
+    errorElem.setAttribute('style', 'opacity: 1');
+    errorElem.textContent = 'Это обязательное поле';
+    return false;
+  }
+  else if (inputElem.value.length == 1) {
+    errorElem.textContent = 'Должно быть от 2 до 30 символов';
+    return false;
+  }
+  else {
+    errorElem.setAttribute('style', 'opacity: 0');
+    return true;
+  }
+}
+
+// функция, меняющая состояние кнопки сабмита. Состояние кнопки сабмита зависит от того,
+// прошли все поля валидацию или нет. Определите самостоятельно, какие аргументы передавать этой функции.
+function setSubmitButtonState(form) {
+  const inputs = Array.from(form.elements);
+  const submitButton = document.querySelector('#submit');
+
+  let isValidForm = false;
+
+  // TODO подумать над тем как кнопку заставить гаснуть если второе поле пустое
+  // TODO форма и ошибки сбрасываются после отправки формы или закрытия попапа.
+  inputs.forEach((elem) => {
+    if (elem.id !== submit.id) {
+      if (checkInputValidity(elem, elem.nextElementSibling)) isValidForm = true;
+    }
+  });
+
+  if (isValidForm) {
+    submitButton.classList.add('popup__button_active');
+  } else {
+    submitButton.classList.remove('popup__button_active');
+  }
+}
+
+// функция добавления обработчиков. Принимает единственный аргумент — элемент попапа.
+// Добавляет необходимые обработчики всем его полям.
+// Эта функция в своём теле вызывает функции checkInputValidity и setSubmitButtonState
+function setEventListeners(popupElem) {
+  popupElem.addEventListener('input', function (event) {
+    checkInputValidity(event.target, event.target.nextElementSibling);
+    setSubmitButtonState(event.target.parentNode.parentNode);
+  })
+}
+
+setEventListeners(inputs[1]);
+setEventListeners(inputs[0]);
+
+
+
+
+
+
+
+
 
 // слушатель события реализует функцию ставить лайки карточкам
 places.addEventListener('click', cardHandler);
