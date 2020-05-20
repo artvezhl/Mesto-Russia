@@ -113,22 +113,15 @@ const cardHandler = function(event) {
     const image = document.querySelector('.popup__image');
     const link = event.target.getAttribute('style').slice(22, -1).replace(/"/g, "");
     image.setAttribute('src', `${link}`);
-    console.log(link);
     return popupHandler.popupImageToggle();
   }
 };
 
-// валидация форм
+// раздел ВАЛИДАЦИЯ ФОРМ
 const name = document.querySelector('#name');
 const about = document.querySelector('#about');
-const form = document.querySelector('#form');
-
-
-//TODO delete down
-const errorMessage = document.querySelector('#error-name');
-const inputs = Array.from(form.elements);
-console.log(inputs[1].nextElementSibling);
-// TODO delete up
+const placeName = document.querySelector('#name');
+const url = document.querySelector('#about');
 
 // функция валидации поля. Она принимает два аргумента: элемент поля и элемент ошибки.
 // Если поле прошло валидацию, ошибку следует скрыть. Если не прошло — показать.
@@ -153,15 +146,14 @@ function checkInputValidity(inputElem, errorElem) {
 // прошли все поля валидацию или нет. Определите самостоятельно, какие аргументы передавать этой функции.
 function setSubmitButtonState(form) {
   const inputs = Array.from(form.elements);
-  const submitButton = document.querySelector('#submit');
+  const submitButton = form.querySelector('#submit');
 
-  let isValidForm = false;
+  let isValidForm = true;
 
   // TODO подумать над тем как кнопку заставить гаснуть если второе поле пустое
-  // TODO форма и ошибки сбрасываются после отправки формы или закрытия попапа.
   inputs.forEach((elem) => {
     if (elem.id !== submit.id) {
-      if (checkInputValidity(elem, elem.nextElementSibling)) isValidForm = true;
+      if (!checkInputValidity(elem, elem.nextElementSibling)) isValidForm = false;
     }
   });
 
@@ -172,26 +164,40 @@ function setSubmitButtonState(form) {
   }
 }
 
+// функция сброса формы и ошибок
+function resetForm() {
+  const crossButton = document.querySelectorAll('.popup__close');
+
+  crossButton.forEach((elem) => {
+    elem.addEventListener('click', function (event) {
+      const errorElem = event.target.parentNode.querySelectorAll('.error-message');
+      const form = event.target.parentNode.querySelector('.popup__form');
+      errorElem.forEach((elem) => {
+        elem.setAttribute('style', 'opacity: 0');
+      });
+      form.reset();
+    });
+  });
+}
+
 // функция добавления обработчиков. Принимает единственный аргумент — элемент попапа.
 // Добавляет необходимые обработчики всем его полям.
 // Эта функция в своём теле вызывает функции checkInputValidity и setSubmitButtonState
 function setEventListeners(popupElem) {
   popupElem.addEventListener('input', function (event) {
-    checkInputValidity(event.target, event.target.nextElementSibling);
-    setSubmitButtonState(event.target.parentNode.parentNode);
+    const input = event.target;
+    const error = event.target.nextElementSibling;
+    const form = event.target.closest('.popup__form');
+    checkInputValidity(input, error);
+    setSubmitButtonState(form);
   })
 }
 
-setEventListeners(inputs[1]);
-setEventListeners(inputs[0]);
-
-
-
-
-
-
-
-
+setEventListeners(name);
+setEventListeners(about);
+setEventListeners(placeName);
+setEventListeners(url);
+resetForm();
 
 // слушатель события реализует функцию ставить лайки карточкам
 places.addEventListener('click', cardHandler);
