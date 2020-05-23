@@ -31,14 +31,14 @@
         <h3 class="popup__title">Новое место</h3>
         <form novalidate class="popup__form" name="new">
             <div class="input__container">
-                <input type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
-                <span id="error-place-name" class="error-message error-message__hidden"></span>
+                <input id="place" type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
+                <span id="error-place" class="error-message error-message__hidden"></span>
             </div>
             <div class="input__container">
-                <input type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+                <input id="url" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
                 <span id="error-url" class="error-message error-message__hidden"></span>
             </div>
-            <button class="button popup__button">+</button>
+            <button id="place-button" type="submit" class="button popup__button">+</button>
         </form>
       </div>
     </div>
@@ -55,7 +55,7 @@
                 <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
                 <span id="error-about" class="error-message error-message__hidden"></span>
             </div>
-            <button id="submit" class="button popup__button popup__button_place_profile">Сохранить</button>
+            <button id="submit" type="submit" class="button popup__button popup__button_place_profile">Сохранить</button>
         </form>
       </div>
     </div>
