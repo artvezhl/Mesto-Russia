@@ -9,29 +9,10 @@ const submitEditFormButton = document.querySelector('.popup__button_place_profil
 const infoName = document.querySelector('.user-info__name');
 const infoJob = document.querySelector('.user-info__job');
 const popupProfile = document.querySelector('.popup-profile');
+const currentName = document.querySelector('.user-info__name');
+const currentAbout = document.querySelector('.user-info__job');
 
 // функциональное выражение создает разметку карточек и возвращает эту разметку
-
-/* DONE Надо исправить: Стоит обратить внимание, что вставка данных с помощью интерполяции шаблонной строки и insertAdjacentHTML может привести к уязвимости XSS, т.к. данные вставляются на страницу как обычный html, а если они придут с сервера в данных может быть код злоумышленника и он будет вставлен на страницу как html и исполнится. Поэтому необходимо фильтровать html теги во вставляемых данных (такая процедура называется HTML sanitization пример как это сделать есть здесь
-https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-innerhtml-in-vanilla-javascript/ ) или вставлять данные с помощью textContent и style.backgroundImage уже после создания разметки элемента как показано на примере ниже:
-
-    const template = document.createElement("div");
-    template.insertAdjacentHTML('beforeend', `
-              <div class="place-card">
-                <div class="place-card__image">
-                    <button class="place-card__delete-icon"></button>
-                </div>
-                <div class="place-card__description">
-                    <h3 class="place-card__name"></h3>
-                    <button class="place-card__like-icon"></button>
-                </div>
-              </div>`);
-    const placeCard = template.firstElementChild;
-    placeCard.querySelector(".place-card__name").textContent = name;
-    placeCard.querySelector(".place-card__image").style.backgroundImage = `url(${link})`;
-    return placeCard;
-*/
-
 const createCard = function (name, link) {
   const template = document.createElement("div");
   template.insertAdjacentHTML('beforeend', `
@@ -60,24 +41,12 @@ const addStartCards = function() {
   }
 };
 
-// функция добавляет/удаляет класс у формы, чтобы реализовать ее открытие/закрытие
-
-// DONE Надо исправить: Сложная функция с дублированием кода.
-/*
-function popupToggle(popup) {
-   popup.classList.toggle('popup_is-opened');
-}
-Стоит сократить так.
-* */
 // функция меняет класс открытия / закрытия формы
 function popupToggle(popup) {
   popup.classList.toggle('popup_is-opened');
 }
 
 function popupClose(event) {
-  // DONE Надо исправить: Используя parentElement мы сильно зависим от разметки, которая может измениться. Лучше использовать метод closest для поиска нужного нам родителя
-  // https://learn.javascript.ru/searching-elements-dom
-  // Так код выполниться корректно вне зависимости от уровня вложенности элемента, на котором произошло событие.
   const popup = event.target.closest('.popup');
   const form = event.target.parentNode.querySelector('.popup__form');
   if (!popup.className.includes('popup-image'))
@@ -111,7 +80,6 @@ const addNewCard = function(event) {
 
 // функциональное выражение меняет имя и род деятельности вверху страницы
 const changeInfo = function (name, job) {
-  // DONE Можно лучше: Переменные стоит вынести из функции, чтобы при каждом вызове не искать элементы в DOM
   infoName.textContent = name;
   infoJob.textContent = job;
 };
@@ -144,8 +112,8 @@ function imageGrowth(event) {
 // метод - обработчик для лайков, вывода картинок и удаления карточек
 const cardHandler = function(event) {
   if (event.target.classList.contains('place-card__like-icon'))
-      // DONE Можно лучше: Логику внутри условий лучше вынести в отдельные функции с говорящими названиями.
-      // Так логика будет разделена. Появится возможность переиспользовать код. А благодаря названиям функций код станет проще читать.
+      //Можно лучше: После проверки нам уже не нужен весь объект event в функциях. Лучше принимать в функцию элемент(event.target в данном случае).
+      // Так она станет универсальной и перестанет зависеть от подхода к поиску элемента. Мы сможем передать ей и элемент найденный через event.target и через querySelector.
     cardLike(event);
   if (event.target.classList.contains('place-card__delete-icon'))
     cardDelete(event);
@@ -156,92 +124,59 @@ const cardHandler = function(event) {
 
 // раздел ВАЛИДАЦИЯ ФОРМ
 
-// функция работы с ошибками
-function setErrors(input) {
-  input.setCustomValidity('');
-
-  if (input.validity.valueMissing) {
-    input.setCustomValidity('Это обязательное поле');
-  }
-  if (input.validity.tooShort || input.validity.tooLong) {
-    input.setCustomValidity('Должно быть от 2 до 30 символов');
-  }
-}
-
-
 // функция валидации поля. Она принимает два аргумента: элемент поля и элемент ошибки.
 // Если поле прошло валидацию, ошибку следует скрыть. Если не прошло — показать.
 function checkInputValidity(inputElem, errorElem) {
-// DONE Надо исправить: Функция работает некорректно. Для проверки валидации лучше воспользоваться встроенной HTML5 валидацией. Используем объект validity в условиях вместо собственных проверок.
-// //https://developer.mozilla.org/ru/docs/Learn/HTML/Forms/%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D1%8F_%D1%84%D0%BE%D1%80%D0%BC%D1%8B#API_%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8_%D0%B2%D0%B0%D0%BB%D0%B8%D0%B4%D0%BD%D0%BE%D1%81%D1%82%D0%B8_HTML5
-  // перенес в другую функцию все условия из этой
-  setErrors(inputElem);
+// перенес в другую функцию все условия из этой
+  //DONE Лучше всё таки провалидировать и установить ошибки в одной и той же функции. Так код будет выглядеть более целостно. К тому же визуально ошибки устанавливаются в этой функции.
+  inputElem.setCustomValidity('');
+
+  if (inputElem.validity.valueMissing) {
+    inputElem.setCustomValidity('Это обязательное поле');
+  }
+  if (inputElem.validity.tooShort || inputElem.validity.tooLong) {
+    inputElem.setCustomValidity('Должно быть от 2 до 30 символов');
+  }
   errorElem.textContent = inputElem.validationMessage;
-  // if (inputElem.validity.valueMissing) {
-  //   //errorElem.classList.remove('error-message__hidden');
-  //   inputElem.setCustomValidity('Это обязательное поле');
-    // DONE Можно лучше: Нам не нужно ничего возвращать из функции. Все return'ы можно удалить
-  // }
-  // if (inputElem.validity.tooShort || inputElem.validity.tooLong) {
-  //   // errorElem.classList.remove('error-message__hidden');
-  //   inputElem.setCustomValidity('Должно быть от 2 до 30 символов');
-  // }
-  // if (inputElem.validity)
-  //   inputElem.setCustomValidity('');
 
 }
 
-// функция, меняющая состояние кнопки сабмита. Состояние кнопки сабмита зависит от того,
-// прошли все поля валидацию или нет. Определите самостоятельно, какие аргументы передавать этой функции.
 function setSubmitButtonState(form) {
-  // DONE Надо исправить: Функция не дизейблит поля. Всю, что нам нужно это узнать валидна форма или нет. И для этого у нас есть метод checkValidity().
-  // Вся функция сводится к submitButton.disable = !form.checkValidity()
-  const submitButton = form.querySelector('#submit');
+  const submitButton = form.querySelector('.button');
   submitButton.disabled = !form.checkValidity();
-
-  if (form.checkValidity()) {
-    submitButton.classList.add('popup__button_active');
-  } else {
-    submitButton.classList.remove('popup__button_active');
-  }
+// DONE Можно лучше: Повторно проверять не нужно. И класс этот не нужен. В css есть селектор :disabled для стилизации задизейблинных элементов. Так состояние точно не разойдется с визуальной составляющей.
 }
 
 // функция сброса формы и ошибок
-// DONE Надо исправить: Функция должна работать точечно. Для этого передаем в неё форму и ищем ошибки только в ней.
 function resetForm(form) {
-  const [...errorElems] = form.querySelectorAll('.error-message');
-  errorElems.forEach((elem) => {
-    // DONE Можно лучше: Стилями стоит управлять в css. Тут лучше переключать класс.
+  // DONE Можно лучше: Не стоит использовать сокращения. errorElements
+  const [...errorElements] = form.querySelectorAll('.error-message');
+  errorElements.forEach((elem) => {
     elem.textContent = "";
   });
+  form.reset();
 }
 
 function fillFormUserName() {
-  const currentName = document.querySelector('.user-info__name').textContent;
-  const currentAbout = document.querySelector('.user-info__job').textContent;
+  // DONE Можно лучше: user-info__name и user-info__job стоит вынести в переменные в начале файла.
   const { name, about } = editForm.elements;
-  name.value = currentName;
-  about.value = currentAbout;
+  name.value = currentName.textContent;
+  about.value = currentAbout.textContent;
 }
 
-// функция добавления обработчиков. Принимает единственный аргумент — элемент попапа.
 // Добавляет необходимые обработчики всем его полям.
-// Эта функция в своём теле вызывает функции checkInputValidity и setSubmitButtonState
 function setEventListeners(popupElem) {
   popupElem.addEventListener('input', function (event) {
-    //Отлично: Функция обработчик сделана отлично.
     const input = event.target;
-    //const error = input.nextElementSibling; так понятнее. Нашли инпут, дальше пляшем от него.
     const error = input.nextElementSibling;
-    //const form = input.closest('.popup__form');
     const form = input.closest('.popup__form');
     checkInputValidity(input, error);
     setSubmitButtonState(form);
   })
 }
-
-// DONE Надо исправить: Хардкодить все поля не нужно. Представьте, что в форме 50 полей. Или добавили ещё несколько. Мы не должны править из-за этого код.
-//Функция setEventListeners должна динамически находить все инпуты в переданной форме и вешать обработчики.
+// Можно лучше: Этот код стоит перенести в setEventListeners. И передавать в функцию форму.
+// Для инициализации нужно будет вызвать функцию дважды, передав туда формы.
+// Если хочется можно завести функцию, которая пробежится по массив форм и передаст каждую туда.
 formsArray.forEach((form) => {
   const inputs = [...form.elements];
   inputs.forEach((input) => {
@@ -249,15 +184,14 @@ formsArray.forEach((form) => {
   });
 });
 
-function handleFormSubmit(event) {
+function handleEditFormSubmit(event) {
   changeNameAndJob(event);
   resetForm(editForm);
   popupToggle(popupProfile);
 }
 
-submitEditFormButton.addEventListener('click', handleFormSubmit);
-
-// DONE Надо исправить: При инициализации нам не нужно сбрасывать формы. Они и так пусты. Ошибки должны быть скрыты по умолчанию
+// DONE Можно лучше: Событие стоит вешать на форму (submit)
+editForm.addEventListener('submit', handleEditFormSubmit);
 
 // слушатель события реализует функцию ставить лайки карточкам
 places.addEventListener('click', cardHandler);
@@ -297,12 +231,13 @@ newCardForm.addEventListener('submit', addNewCard);
 // метод добавляет стартовые карточки в разметку
 addStartCards();
 
+//Можно лучше: В форме редактирования профиля лучше дизейблить кнопку отправки по умолчанию при открытии.
+// Ведь если данные не изменились нет необходимости их сохранять повторно. Активная кнопка может порождать лишние запросы на сервер в будущем.
+
 /*Хорошая работа. Для успешной сдачи необходимо исправить все замечания "Надо исправить".
-1) Исправить функции валидации. Сейчас они не работоспособны. Ошибки появляются не под теми полями, с которыми происходит взаимодействие. Не всегда появляются ошибки. Кнопка не блокируется.
-2) Форма редактирования должна заполняться данными о пользователе при открытии.
-3) Исправить небезопасную вставку пользовательских данных.
-4) Убрать хардкод при навешивании обработчиков
-5) Переписать функцию управления попапом. Сейчас она сильно перегружена
+1) DONE Ошибка в консоли при вводе в форму добавления карточки.
+2) DONE Та же форма не очищается при закрытии на крестик.
+3) DONE В форме редактирования профиля при открытии кнопка визуально не активна, но при клике попап закрывается.
 * Успехов в доработке.*/
 
 /*Отлично:
