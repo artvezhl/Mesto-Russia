@@ -1,15 +1,14 @@
 const places = document.querySelector('.places-list');
-const placesImage = document.querySelectorAll('.place-card__image');
-const profile = document.querySelector('.profile');
-const popups = document.querySelectorAll('.popup');
 const addCardButton = document.querySelector('.user-info__button');
 const formsArray = [...document.forms];
 const newCardForm = document.forms.new;
 const crossButton = document.querySelectorAll('.popup__close');
 const editForm = document.forms.edit;
 const editInfoButton = document.querySelector('.user-info__edit-button');
+const submitEditFormButton = document.querySelector('.popup__button_place_profile');
 const infoName = document.querySelector('.user-info__name');
 const infoJob = document.querySelector('.user-info__job');
+const popupProfile = document.querySelector('.popup-profile');
 
 // функциональное выражение создает разметку карточек и возвращает эту разметку
 
@@ -33,7 +32,6 @@ https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-inne
     return placeCard;
 */
 
-
 const createCard = function (name, link) {
   const template = document.createElement("div");
   template.insertAdjacentHTML('beforeend', `
@@ -51,8 +49,6 @@ const createCard = function (name, link) {
   placeCard.querySelector(".place-card__image").style.backgroundImage = `url(${link})`;
   return placeCard;
 };
-
-// TODO исправить чтобы показывало увеличенную картинку в попапе
 
 // функциональное выражение используется для добавления карточек в разметку
 const addCard = (name, link) => places.appendChild(createCard(name, link));
@@ -83,21 +79,22 @@ function popupClose(event) {
   // https://learn.javascript.ru/searching-elements-dom
   // Так код выполниться корректно вне зависимости от уровня вложенности элемента, на котором произошло событие.
   const popup = event.target.closest('.popup');
+  const form = event.target.parentNode.querySelector('.popup__form');
+  if (!popup.className.includes('.popup-image'))
+    resetForm(form);
   popupToggle(popup);
 }
 
 function popupOpen(event) {
   const popupCard = document.querySelector('.popup-card');
   const popupProfile = document.querySelector('.popup-profile');
-  // const popupImage = document.querySelector('.popup-image');
   let popup;
   if (event.target.className.includes('user-info__button'))
     popup = popupCard;
-  if (event.target.className.includes('user-info__edit-button'))
+  if (event.target.className.includes('user-info__edit-button')) {
     popup = popupProfile;
-  // if (event.target.className.includes('place-card__image'))
-  //   popup = popupImage;
-
+    fillFormUserName();
+  }
   popupToggle(popup);
 }
 
@@ -105,7 +102,7 @@ function popupOpen(event) {
 const addNewCard = function(event) {
   event.preventDefault();
   const { name, link } = newCardForm.elements;
-  if (name.value.length !== 0 || link.value.length !== 0) {
+  if (newCardForm.checkValidity()) {
     addCard(name.value, link.value);
     popupClose(event);
     newCardForm.reset();
@@ -125,11 +122,7 @@ const changeNameAndJob = function(event) {
   event.preventDefault();
   const { name, about } = editForm.elements;
 
-  if (name.value.length !== 0 || about.value.length !== 0) {
-    changeInfo(name.value, about.value);
-    popupClose(event);
-    editForm.reset();
-  }
+  changeInfo(name.value, about.value);
 };
 
 function cardLike(event) {
@@ -162,41 +155,40 @@ const cardHandler = function(event) {
 };
 
 // раздел ВАЛИДАЦИЯ ФОРМ
-const name = document.querySelector('#name');
-const about = document.querySelector('#about');
-const placeName = document.querySelector('#place');
-const url = document.querySelector('#url');
 
-// // функция проверяет поле на валидность
-// function isInputValid (input) {
-//   let isValid = true;
-//   if (!input.validity)
-//     isValid = false;
-//   return isValid;
-// }
-//
-// // функция устанавливает текст ошибок в зависимости от введенных значений
-// function setErrorMessage (input) {
-//   const errorElem = input.parentNode.querySelector(`error-${input.id}`);
-//   errorElem.textContent = input.validationMessage;
-// }
+// функция работы с ошибками
+function setErrors(input) {
+  input.setCustomValidity('');
+
+  if (input.validity.valueMissing) {
+    input.setCustomValidity('Это обязательное поле');
+  }
+  if (input.validity.tooShort || input.validity.tooLong) {
+    input.setCustomValidity('Должно быть от 2 до 30 символов');
+  }
+}
+
 
 // функция валидации поля. Она принимает два аргумента: элемент поля и элемент ошибки.
 // Если поле прошло валидацию, ошибку следует скрыть. Если не прошло — показать.
 function checkInputValidity(inputElem, errorElem) {
-// Надо исправить: Функция работает некорректно. Для проверки валидации лучше воспользоваться встроенной HTML5 валидацией. Используем объект validity в условиях вместо собственных проверок.
+// DONE Надо исправить: Функция работает некорректно. Для проверки валидации лучше воспользоваться встроенной HTML5 валидацией. Используем объект validity в условиях вместо собственных проверок.
 // //https://developer.mozilla.org/ru/docs/Learn/HTML/Forms/%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D1%8F_%D1%84%D0%BE%D1%80%D0%BC%D1%8B#API_%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8_%D0%B2%D0%B0%D0%BB%D0%B8%D0%B4%D0%BD%D0%BE%D1%81%D1%82%D0%B8_HTML5
+  // перенес в другую функцию все условия из этой
+  setErrors(inputElem);
   errorElem.textContent = inputElem.validationMessage;
-  if (!inputElem.validity) {
-    errorElem.classList.remove('error-message__hidden');
-    // TODO исправить чтобы выводил то что ниже при пустом поле
-    errorElem.textContent = 'Это обязательное поле';
+  // if (inputElem.validity.valueMissing) {
+  //   //errorElem.classList.remove('error-message__hidden');
+  //   inputElem.setCustomValidity('Это обязательное поле');
     // DONE Можно лучше: Нам не нужно ничего возвращать из функции. Все return'ы можно удалить
-  }
-  if (inputElem.validity.tooShort || inputElem.validity.tooLong)
-    errorElem.textContent = 'Должно быть от 2 до 30 символов';
-  else
-    errorElem.classList.add('error-message__hidden');
+  // }
+  // if (inputElem.validity.tooShort || inputElem.validity.tooLong) {
+  //   // errorElem.classList.remove('error-message__hidden');
+  //   inputElem.setCustomValidity('Должно быть от 2 до 30 символов');
+  // }
+  // if (inputElem.validity)
+  //   inputElem.setCustomValidity('');
+
 }
 
 // функция, меняющая состояние кнопки сабмита. Состояние кнопки сабмита зависит от того,
@@ -215,19 +207,21 @@ function setSubmitButtonState(form) {
 }
 
 // функция сброса формы и ошибок
-// Надо исправить: Функция должна работать точечно. Для этого передаем в неё форму и ищем ошибки только в ней.
+// DONE Надо исправить: Функция должна работать точечно. Для этого передаем в неё форму и ищем ошибки только в ней.
 function resetForm(form) {
-  const crossButton = form.parentNode.querySelector('.popup__close');
+  const [...errorElems] = form.querySelectorAll('.error-message');
+  errorElems.forEach((elem) => {
+    // DONE Можно лучше: Стилями стоит управлять в css. Тут лучше переключать класс.
+    elem.textContent = "";
+  });
+}
 
-  crossButton.addEventListener('click', function (event) {
-      const errorElem = event.target.parentNode.querySelectorAll('.error-message');
-      const form = event.target.parentNode.querySelector('.popup__form');
-      errorElem.forEach((elem) => {
-        // DONE Можно лучше: Стилями стоит управлять в css. Тут лучше переключать класс.
-        elem.classList.toggle('error-message__hidden');
-      });
-      form.reset();
-    });
+function fillFormUserName() {
+  const currentName = document.querySelector('.user-info__name').textContent;
+  const currentAbout = document.querySelector('.user-info__job').textContent;
+  const { name, about } = editForm.elements;
+  name.value = currentName;
+  about.value = currentAbout;
 }
 
 // функция добавления обработчиков. Принимает единственный аргумент — элемент попапа.
@@ -245,6 +239,7 @@ function setEventListeners(popupElem) {
     setSubmitButtonState(form);
   })
 }
+
 // DONE Надо исправить: Хардкодить все поля не нужно. Представьте, что в форме 50 полей. Или добавили ещё несколько. Мы не должны править из-за этого код.
 //Функция setEventListeners должна динамически находить все инпуты в переданной форме и вешать обработчики.
 formsArray.forEach((form) => {
@@ -253,6 +248,15 @@ formsArray.forEach((form) => {
     setEventListeners(input);
   });
 });
+
+function handleFormSubmit(event) {
+  changeNameAndJob(event);
+  resetForm(editForm);
+  popupToggle(popupProfile);
+}
+
+submitEditFormButton.addEventListener('click', handleFormSubmit);
+
 // DONE Надо исправить: При инициализации нам не нужно сбрасывать формы. Они и так пусты. Ошибки должны быть скрыты по умолчанию
 
 // слушатель события реализует функцию ставить лайки карточкам
@@ -267,10 +271,7 @@ editInfoButton.addEventListener('click', popupOpen);
 // обработчик нажатия на крестик - закрывает попап
 crossButton.forEach((elem) => elem.addEventListener('click', popupClose));
 
-// слушатель события при отправке формы вызывает функцию, которая добавляет
-// новую не пустую карточку в разметку и закрывает форму
-
-//Можно лучше: В обработчиках стоит использовать коллбек функции, в которых проводить всю работу с event и вызывать необходимые нам функции.
+// Можно лучше: В обработчиках стоит использовать коллбек функции, в которых проводить всю работу с event и вызывать необходимые нам функции.
 /*
 *
 handleCardFormSubmit(event) {
@@ -292,14 +293,6 @@ cardHandler сделан правильно
 * */
 
 newCardForm.addEventListener('submit', addNewCard);
-//
-// // слушатель события при отправке формы вызывает функцию, которая
-// // изменяет имя и род деятельности в шапке
-editForm.addEventListener('submit', changeNameAndJob);
-//
-// // слушатель события при открытии формы вызывает функцию popupHandler
-// // в целях изменения информации вверху страницы о человеке и роде деятельности
-// editInfoButton.addEventListener('click', popupHandler.popupProfileToggle);
 
 // метод добавляет стартовые карточки в разметку
 addStartCards();

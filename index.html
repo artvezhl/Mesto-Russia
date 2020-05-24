@@ -44,16 +44,16 @@
     </div>
     <div class="popup popup-profile">
       <div class="popup__content">
-        <img src="./images/close.svg" alt="" class="popup__close">
+        <img id="edit-cross-button" src="./images/close.svg" alt="" class="popup__close">
         <h3 class="popup__title">Редактировать профиль</h3>
         <form id="form" novalidate class="popup__form" name="edit">
             <div class="input__container">
                 <input id="name" type="text" minlength="2" maxlength="30" name="name" required class="popup__input popup__input_type_name" placeholder="Имя">
-                <span id="error-name" class="error-message error-message__hidden"></span>
+                <span id="error-name" class="error-message"></span>
             </div>
             <div class="input__container">
                 <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
-                <span id="error-about" class="error-message error-message__hidden"></span>
+                <span id="error-about" class="error-message"></span>
             </div>
             <button id="submit" type="submit" class="button popup__button popup__button_place_profile">Сохранить</button>
         </form>

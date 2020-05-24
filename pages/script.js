@@ -190,7 +190,6 @@ function setSubmitButtonState(form) {
 
     let isValidForm = true;
 
-    // TODO подумать над тем как кнопку заставить гаснуть если второе поле пустое
     inputs.forEach((elem) => {
         if (elem.id !== submit.id) {
             if (!checkInputValidity(elem, elem.nextElementSibling)) isValidForm = false;
