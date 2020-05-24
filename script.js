@@ -80,7 +80,7 @@ function popupClose(event) {
   // Так код выполниться корректно вне зависимости от уровня вложенности элемента, на котором произошло событие.
   const popup = event.target.closest('.popup');
   const form = event.target.parentNode.querySelector('.popup__form');
-  if (!popup.className.includes('.popup-image'))
+  if (!popup.className.includes('popup-image'))
     resetForm(form);
   popupToggle(popup);
 }
