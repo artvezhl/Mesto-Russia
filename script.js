@@ -2,15 +2,20 @@ const places = document.querySelector('.places-list');
 const addCardButton = document.querySelector('.user-info__button');
 const formsArray = [...document.forms];
 const newCardForm = document.forms.new;
-const crossButton = document.querySelectorAll('.popup__close');
+const newCardFormSubmitButton = newCardForm.querySelector('.button');
 const editForm = document.forms.edit;
+const editFormSubmitButton = editForm.querySelector('.button');
 const editInfoButton = document.querySelector('.user-info__edit-button');
-const submitEditFormButton = document.querySelector('.popup__button_place_profile');
 const infoName = document.querySelector('.user-info__name');
 const infoJob = document.querySelector('.user-info__job');
+const popupAddCard = document.querySelector('.popup-card');
 const popupProfile = document.querySelector('.popup-profile');
+const popupImage = document.querySelector('.popup-image');
 const currentName = document.querySelector('.user-info__name');
 const currentAbout = document.querySelector('.user-info__job');
+const crossImagePopup = popupImage.querySelector('.popup__close');
+const crossProfilePopup = popupProfile.querySelector('.popup__close');
+const crossAddCardPopup = popupAddCard.querySelector('.popup__close');
 
 // функциональное выражение создает разметку карточек и возвращает эту разметку
 const createCard = function (name, link) {
@@ -45,37 +50,53 @@ const addStartCards = function() {
 function popupToggle(popup) {
   popup.classList.toggle('popup_is-opened');
 }
+// TODO
+// DONE Надо исправить: Функции popupOpen используются в обработчиках.
+// Хорошей практикой является формирование названия функции обработчика по такому принципу:
+// handle + название объекта + название события
+// Например:
+// handleFormSubmit
+// handleInputChange
+// handleDeleteButtonClick
+// Сейчас имена функций не соответствуют выполняемому действию. Для открытия/закрытия у нас есть функция popupToggle. Эти функции обрабатывают клик. Так и надо написать в названии.
 
-function popupClose(event) {
-  const popup = event.target.closest('.popup');
-  const form = event.target.parentNode.querySelector('.popup__form');
-  if (!popup.className.includes('popup-image'))
-    resetForm(form);
-  popupToggle(popup);
+function handleImagePopupClose() {
+  popupToggle(popupImage);
 }
 
-function popupOpen(event) {
-  const popupCard = document.querySelector('.popup-card');
-  const popupProfile = document.querySelector('.popup-profile');
-  let popup;
-  if (event.target.className.includes('user-info__button'))
-    popup = popupCard;
-  if (event.target.className.includes('user-info__edit-button')) {
-    popup = popupProfile;
-    fillFormUserName();
-  }
-  popupToggle(popup);
+function handleEditPopupClose() {
+  resetFormErrors(editForm);
+  popupToggle(popupProfile);
+}
+
+function handleAddCardPopupClose() {
+  resetFormErrors(newCardForm);
+  popupToggle(popupAddCard);
+}
+
+// DONE Надо исправить: В отличии от обработчика на карточке тут не требуется искать что-либо. Обработчик срабатывает только на кнопках. И мы точно знаем, что должно произойти.
+//Стоит сделать 2 функции обработчика. В одной функции вызов popupToggle с передачей нужного попапа, во второй вызов popupToggle и fillFormUserName без условий и поиска элементов.
+
+function handleAddCardButtonClick() {
+  popupToggle(popupAddCard);
+  newCardFormSubmitButton.disabled = true;
+}
+
+function handleEditButtonClick() {
+  popupToggle(popupProfile);
+  fillFormUserName();
+  editFormSubmitButton.disabled = true;
 }
 
 // метод добавляет новую карточку, закрывает ее и сбрасывает форму
 const addNewCard = function(event) {
   event.preventDefault();
   const { name, link } = newCardForm.elements;
-  if (newCardForm.checkValidity()) {
-    addCard(name.value, link.value);
-    popupClose(event);
-    newCardForm.reset();
-  }
+  // DONE Надо исправить: Эта функция вызывается только после того, как форма прошла валидацию. Повторно проверять её не нужно.
+  addCard(name.value, link.value);
+  // DONE Можно лучше: Тут лучше вызвать popupToggle и resetForm
+  popupToggle(popupAddCard);
+  resetFormErrors(newCardForm);
 };
 
 // функциональное выражение меняет имя и род деятельности вверху страницы
@@ -104,15 +125,14 @@ function cardDelete(event) {
 function imageGrowth(event) {
   const image = document.querySelector('.popup__image');
   const link = event.target.getAttribute('style').slice(22, -2).replace(/"/g, "");
-  const popup = document.querySelector('.popup-image');
   image.setAttribute('src', `${link}`);
-  return popupToggle(popup);
+  return popupToggle(popupImage);
 }
 
 // метод - обработчик для лайков, вывода картинок и удаления карточек
 const cardHandler = function(event) {
   if (event.target.classList.contains('place-card__like-icon'))
-      //Можно лучше: После проверки нам уже не нужен весь объект event в функциях. Лучше принимать в функцию элемент(event.target в данном случае).
+      // Можно лучше: После проверки нам уже не нужен весь объект event в функциях. Лучше принимать в функцию элемент(event.target в данном случае).
       // Так она станет универсальной и перестанет зависеть от подхода к поиску элемента. Мы сможем передать ей и элемент найденный через event.target и через querySelector.
     cardLike(event);
   if (event.target.classList.contains('place-card__delete-icon'))
@@ -124,11 +144,8 @@ const cardHandler = function(event) {
 
 // раздел ВАЛИДАЦИЯ ФОРМ
 
-// функция валидации поля. Она принимает два аргумента: элемент поля и элемент ошибки.
-// Если поле прошло валидацию, ошибку следует скрыть. Если не прошло — показать.
+// функция валидации поля.
 function checkInputValidity(inputElem, errorElem) {
-// перенес в другую функцию все условия из этой
-  //DONE Лучше всё таки провалидировать и установить ошибки в одной и той же функции. Так код будет выглядеть более целостно. К тому же визуально ошибки устанавливаются в этой функции.
   inputElem.setCustomValidity('');
 
   if (inputElem.validity.valueMissing) {
@@ -144,12 +161,12 @@ function checkInputValidity(inputElem, errorElem) {
 function setSubmitButtonState(form) {
   const submitButton = form.querySelector('.button');
   submitButton.disabled = !form.checkValidity();
-// DONE Можно лучше: Повторно проверять не нужно. И класс этот не нужен. В css есть селектор :disabled для стилизации задизейблинных элементов. Так состояние точно не разойдется с визуальной составляющей.
 }
 
 // функция сброса формы и ошибок
-function resetForm(form) {
-  // DONE Можно лучше: Не стоит использовать сокращения. errorElements
+
+// DONE Можно лучше: resetForm -> resetFormErrors
+function resetFormErrors(form) {
   const [...errorElements] = form.querySelectorAll('.error-message');
   errorElements.forEach((elem) => {
     elem.textContent = "";
@@ -158,7 +175,6 @@ function resetForm(form) {
 }
 
 function fillFormUserName() {
-  // DONE Можно лучше: user-info__name и user-info__job стоит вынести в переменные в начале файла.
   const { name, about } = editForm.elements;
   name.value = currentName.textContent;
   about.value = currentAbout.textContent;
@@ -186,25 +202,27 @@ formsArray.forEach((form) => {
 
 function handleEditFormSubmit(event) {
   changeNameAndJob(event);
-  resetForm(editForm);
+  resetFormErrors(editForm);
   popupToggle(popupProfile);
 }
 
-// DONE Можно лучше: Событие стоит вешать на форму (submit)
 editForm.addEventListener('submit', handleEditFormSubmit);
 
 // слушатель события реализует функцию ставить лайки карточкам
 places.addEventListener('click', cardHandler);
 
 // обработчик нажатия на кнопку добавить карточку (+) - открывает попап
-addCardButton.addEventListener('click', popupOpen);
+addCardButton.addEventListener('click', handleAddCardButtonClick);
 
 // обработчик нажатия на кнопку Edit - открыает попап
-editInfoButton.addEventListener('click', popupOpen);
+editInfoButton.addEventListener('click', handleEditButtonClick);
 
 // обработчик нажатия на крестик - закрывает попап
-crossButton.forEach((elem) => elem.addEventListener('click', popupClose));
-
+// Лучше завести 3 обработчика на каждый крестик. Иначе сейчас добавляется условие в popupClose. Появится новый попап со своей логикой и придется снова править popupClose превращая её в функцию франкенштейна.
+// crossButton.forEach((elem) => elem.addEventListener('click', popupClose));
+crossImagePopup.addEventListener('click', handleImagePopupClose);
+crossProfilePopup.addEventListener('click', handleEditPopupClose);
+crossAddCardPopup.addEventListener('click', handleAddCardPopupClose);
 // Можно лучше: В обработчиках стоит использовать коллбек функции, в которых проводить всю работу с event и вызывать необходимые нам функции.
 /*
 *
@@ -231,13 +249,16 @@ newCardForm.addEventListener('submit', addNewCard);
 // метод добавляет стартовые карточки в разметку
 addStartCards();
 
-//Можно лучше: В форме редактирования профиля лучше дизейблить кнопку отправки по умолчанию при открытии.
+// Можно лучше: В форме редактирования профиля лучше дизейблить кнопку отправки по умолчанию при открытии.
 // Ведь если данные не изменились нет необходимости их сохранять повторно. Активная кнопка может порождать лишние запросы на сервер в будущем.
 
 /*Хорошая работа. Для успешной сдачи необходимо исправить все замечания "Надо исправить".
-1) DONE Ошибка в консоли при вводе в форму добавления карточки.
-2) DONE Та же форма не очищается при закрытии на крестик.
-3) DONE В форме редактирования профиля при открытии кнопка визуально не активна, но при клике попап закрывается.
+1) DONE Поправить имена функций, чтобы они соответствовали выполняемому действию
+2) DONE Разнести обработку событий в popupOpen на разные функции. Она не оптимальна. Как и popupClose.
+3) DONE Сейчас при открытии попапа добавления карточки кнопка визуально активна, но не работает.
+4) DONE Если закрыть любую форму с ошибками, то при открытии кнопка задизейблина, если закрыть форму без ошибок, то кнопка при повторном открытии активна.
+Состояние кнопки при открытии должно быть прогнозируемым и постоянным. Рекомендую всегда делать её неактивной.
+5) DONE Убрать повторную валидацию формы в функции addNewCard
 * Успехов в доработке.*/
 
 /*Отлично:
