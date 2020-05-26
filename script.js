@@ -50,15 +50,6 @@ const addStartCards = function() {
 function popupToggle(popup) {
   popup.classList.toggle('popup_is-opened');
 }
-// TODO
-// DONE Надо исправить: Функции popupOpen используются в обработчиках.
-// Хорошей практикой является формирование названия функции обработчика по такому принципу:
-// handle + название объекта + название события
-// Например:
-// handleFormSubmit
-// handleInputChange
-// handleDeleteButtonClick
-// Сейчас имена функций не соответствуют выполняемому действию. Для открытия/закрытия у нас есть функция popupToggle. Эти функции обрабатывают клик. Так и надо написать в названии.
 
 function handleImagePopupClose() {
   popupToggle(popupImage);
@@ -73,9 +64,6 @@ function handleAddCardPopupClose() {
   resetFormErrors(newCardForm);
   popupToggle(popupAddCard);
 }
-
-// DONE Надо исправить: В отличии от обработчика на карточке тут не требуется искать что-либо. Обработчик срабатывает только на кнопках. И мы точно знаем, что должно произойти.
-//Стоит сделать 2 функции обработчика. В одной функции вызов popupToggle с передачей нужного попапа, во второй вызов popupToggle и fillFormUserName без условий и поиска элементов.
 
 function handleAddCardButtonClick() {
   popupToggle(popupAddCard);
@@ -92,9 +80,7 @@ function handleEditButtonClick() {
 const addNewCard = function(event) {
   event.preventDefault();
   const { name, link } = newCardForm.elements;
-  // DONE Надо исправить: Эта функция вызывается только после того, как форма прошла валидацию. Повторно проверять её не нужно.
   addCard(name.value, link.value);
-  // DONE Можно лучше: Тут лучше вызвать popupToggle и resetForm
   popupToggle(popupAddCard);
   resetFormErrors(newCardForm);
 };
@@ -165,7 +151,6 @@ function setSubmitButtonState(form) {
 
 // функция сброса формы и ошибок
 
-// DONE Можно лучше: resetForm -> resetFormErrors
 function resetFormErrors(form) {
   const [...errorElements] = form.querySelectorAll('.error-message');
   errorElements.forEach((elem) => {
@@ -218,8 +203,6 @@ addCardButton.addEventListener('click', handleAddCardButtonClick);
 editInfoButton.addEventListener('click', handleEditButtonClick);
 
 // обработчик нажатия на крестик - закрывает попап
-// Лучше завести 3 обработчика на каждый крестик. Иначе сейчас добавляется условие в popupClose. Появится новый попап со своей логикой и придется снова править popupClose превращая её в функцию франкенштейна.
-// crossButton.forEach((elem) => elem.addEventListener('click', popupClose));
 crossImagePopup.addEventListener('click', handleImagePopupClose);
 crossProfilePopup.addEventListener('click', handleEditPopupClose);
 crossAddCardPopup.addEventListener('click', handleAddCardPopupClose);
@@ -243,28 +226,24 @@ cardHandler сделан правильно
     // handleDeleteButtonClick
 *
 * */
-
 newCardForm.addEventListener('submit', addNewCard);
 
 // метод добавляет стартовые карточки в разметку
 addStartCards();
 
-// Можно лучше: В форме редактирования профиля лучше дизейблить кнопку отправки по умолчанию при открытии.
-// Ведь если данные не изменились нет необходимости их сохранять повторно. Активная кнопка может порождать лишние запросы на сервер в будущем.
+//Отличная работа. Задание принято.
+//Просьба не оставлять без внимания не критичные комментарии. Рефакторинг - неотъемлемая часть работы программиста. Всегда нужно стараться делать код лучше.
+//Перед отправкой на проверку следующего спринта необходимо очистить код от комментариев предыдущего спринта. Спасибо.
+//Успехов в дальнейшем обучении.
+/*
 
-/*Хорошая работа. Для успешной сдачи необходимо исправить все замечания "Надо исправить".
-1) DONE Поправить имена функций, чтобы они соответствовали выполняемому действию
-2) DONE Разнести обработку событий в popupOpen на разные функции. Она не оптимальна. Как и popupClose.
-3) DONE Сейчас при открытии попапа добавления карточки кнопка визуально активна, но не работает.
-4) DONE Если закрыть любую форму с ошибками, то при открытии кнопка задизейблина, если закрыть форму без ошибок, то кнопка при повторном открытии активна.
-Состояние кнопки при открытии должно быть прогнозируемым и постоянным. Рекомендую всегда делать её неактивной.
-5) DONE Убрать повторную валидацию формы в функции addNewCard
-* Успехов в доработке.*/
+//Можно лучше: Текст ошибки под полем ссылки не соответствует заданию. Необходимо поправить в следующем спринте.
 
 /*Отлично:
 Код хорошо стилизован
 Используются комментарии в коде
 Используется делегирование
-Отсутствуют неиспользуемые переменные и функции*/
-
-//Просьба не оставлять без внимания не критичные комментарии. Рефакторинг - неотъемлемая часть работы программиста. Всегда нужно стараться делать код лучше.
+Отсутствуют неиспользуемые переменные и функции
+Код краток и лаконичен
+Функционал полностью соответствует заданию
+*/
