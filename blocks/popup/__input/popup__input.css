@@ -7,9 +7,12 @@
   line-height: 17px;
   box-sizing: border-box;
   padding: 5px 6px 13px;
-  margin-bottom: 24px;
 }
 
-.popup__input:last-of-type {
+.input__container {
+  margin-bottom: 12px;
+}
+
+.input__container:last-of-type {
   margin-bottom: 0;
 }
