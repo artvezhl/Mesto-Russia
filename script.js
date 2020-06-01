@@ -1,39 +1,54 @@
-const places = document.querySelector('.places-list');
-const addCardButton = document.querySelector('.user-info__button');
-const formsArray = [...document.forms];
-const newCardForm = document.forms.new;
-const newCardFormSubmitButton = newCardForm.querySelector('.button');
-const editForm = document.forms.edit;
-const editFormSubmitButton = editForm.querySelector('.button');
-const editInfoButton = document.querySelector('.user-info__edit-button');
-const infoName = document.querySelector('.user-info__name');
-const infoJob = document.querySelector('.user-info__job');
-const popupAddCard = document.querySelector('.popup-card');
-const popupProfile = document.querySelector('.popup-profile');
-const popupImage = document.querySelector('.popup-image');
-const currentName = document.querySelector('.user-info__name');
-const currentAbout = document.querySelector('.user-info__job');
-const crossImagePopup = popupImage.querySelector('.popup__close');
-const crossProfilePopup = popupProfile.querySelector('.popup__close');
-const crossAddCardPopup = popupAddCard.querySelector('.popup__close');
+// ( function () {
+//     const places = document.querySelector('.places-list');
+//     const addCardButton = document.querySelector('.user-info__button');
+//     const formsArray = [...document.forms];
+//     const newCardForm = document.forms.new;
+//     const newCardFormSubmitButton = newCardForm.querySelector('.button');
+//     const editForm = document.forms.edit;
+//     const editFormSubmitButton = editForm.querySelector('.button');
+//     const editInfoButton = document.querySelector('.user-info__edit-button');
+//     const infoName = document.querySelector('.user-info__name');
+//     const infoJob = document.querySelector('.user-info__job');
+//     const popupAddCard = document.querySelector('.popup-card');
+//     const popupProfile = document.querySelector('.popup-profile');
+//     const popupImage = document.querySelector('.popup-image');
+//     const currentName = document.querySelector('.user-info__name');
+//     const currentAbout = document.querySelector('.user-info__job');
+//     const crossImagePopup = popupImage.querySelector('.popup__close');
+//     const crossProfilePopup = popupProfile.querySelector('.popup__close');
+//     const crossAddCardPopup = popupAddCard.querySelector('.popup__close');
+// })();
+
 
 // новый код
+const imagePopup = new ImagePopup(document.querySelector('.popup-container'));
 
-const cardList = new Cardlist(document.querySelector('.places-list'));
-//cardList.addCard(card);
+// создание листа с начальными карточками
+const cardList = new Cardlist(document.querySelector('.places-list'), initialCards, imagePopup.open.bind(imagePopup));
 
-const addStartCards = function() {
-  for (let i = 0; i < initialCards.length; i++) {
-    const card = new Card(initialCards[i].name, initialCards[i].link);
-    cardList.addCard(card.createCard());
-    card.setListeners();
-    // console.log(card);
-    // addCard(initialCards[i].name, initialCards[i].link);
-  }
-};
+// отрисовка начальных карточек
+cardList.render();
 
-addStartCards();
 
+
+
+
+// const placeCardImages = document.querySelectorAll('.place-card__image');
+// placeCardImages.forEach(elem => elem.addEventListener('click',(event) => {
+//     const popup = new ImagePopup(event.target.getAttribute('style').slice(22, -2).replace(/"/g, ""));
+//     console.log(popup.template());
+// }));
+
+
+// const addStartCards = function() {
+//   for (let i = 0; i < initialCards.length; i++) {
+//     const card = new Card(initialCards[i].name, initialCards[i].link);
+//     cardList.addCard(card.createCard());
+//     card.setListeners();
+//     // console.log(card);
+//     // addCard(initialCards[i].name, initialCards[i].link);
+//   }
+// };
 
 // функциональное выражение создает разметку карточек и возвращает эту разметку
 // const createCard = function (name, link) {

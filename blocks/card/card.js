@@ -27,15 +27,14 @@ class Card {
         event.target.classList.toggle('place-card__like-icon_liked');
     }
 
-    // TODO исправить метод чтобы он удалял слушателей
+    // TODO исправить метод чтобы он удалял слушателей (было в первом Q&A)
     remove(event) {
         const placesList = event.target.closest('.places-list');
         const currentCard = event.target.closest('div.place-card');
-        // currentCard.removeListeners();
         placesList.removeChild(currentCard);
     }
 
-    setListeners() {
+    setListeners(openImageMethod) {
         this
             .cardElement
             .querySelector('.place-card__like-icon')
@@ -44,6 +43,10 @@ class Card {
             .cardElement
             .querySelector('.place-card__delete-icon')
             .addEventListener('click', this.remove);
+        this
+            .cardElement
+            .querySelector('.place-card__image')
+            .addEventListener('click', openImageMethod);
     }
 
     removeListeners() {
