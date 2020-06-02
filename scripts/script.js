@@ -20,16 +20,38 @@
 // })();
 
 
-// новый код
-const imagePopup = new ImagePopup(document.querySelector('.popup-container'));
+// НОВЫЙ КОД
 
-// создание листа с начальными карточками
-const cardList = new Cardlist(document.querySelector('.places-list'), initialCards, imagePopup.open.bind(imagePopup));
+// TODO TEST PLACE
 
-// отрисовка начальных карточек
+// TODO TEST PLACE FINISHED
+
+// создание переменных для слушателей
+const popupContainer = document.querySelector('.popup-container');
+const editInfoButton = document.querySelector('.user-info__edit-button');
+const addCardButton = document.querySelector('.user-info__button');
+
+// создание экземпляра класса ImagePopup
+const imagePopup = new ImagePopup(popupContainer);
+
+// создание экземпляра класса AddCardPopup
+const addCardPopup = new AddCardPopup(popupContainer);
+
+// создание экземпляра класса AddCardPopup
+const editInfoPopup = new EditInfoPopup(popupContainer);
+
+// создание экземпляра класса Card без аргументов
+const createCard = (...arg) => new Card(...arg);
+
+// создание экземпляра Cardlist
+const cardList = new Cardlist(document.querySelector('.places-list'), initialCards, createCard, imagePopup.open);
+
+// слушатели событий
+editInfoButton.addEventListener('click', editInfoPopup.open);
+addCardButton.addEventListener('click', addCardPopup.open);
+
+// отрасовка начальных карточек
 cardList.render();
-
-
 
 
 

@@ -1,6 +1,8 @@
 class Popup {
-    constructor(popupContainer) {
+    constructor(popupContainer, openButton, closeButton) {
         this.container = popupContainer;
+        this.openButton = openButton;
+        this.closeButton = closeButton;
     }
 
     toggle() {
@@ -15,13 +17,25 @@ class Popup {
     close() {
         this.toggle();
         this.removeListeners();
-        this.container.innerHTML = null;
     }
 
+    // TODO сделать общий слушатель на закрытие всех попапов
     setListeners() {
+        this
+            .openButton
+            .addEventListener('click', this.open);
+        this
+            .closeButton
+            .addEventListener('click', this.close);
     }
 
     // TODO посмотреть какие проблемы с удалением в первом  Q&A
     removeListeners() {
+        this
+            .openButton
+            .removeEventListener('click', this.open.bind(this));
+        this
+            .closeButton
+            .removeEventListener('click', this.close.bind(this));
     }
 }
