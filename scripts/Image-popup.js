@@ -6,12 +6,10 @@ class ImagePopup extends Popup {
         this._popupContent = ImagePopup._template.cloneNode(true).children[0];
     }
 
-    // TODO разобраться почему не отображается картинка
     open = (event) => {
         super.open();
-        const backgroundImage = event.target.getAttribute('style');
         this._link = event.target.getAttribute('style').slice(22, -2).replace(/"/g, "");
-        this._popupContent.querySelector('.popup__image').style = backgroundImage;
+        this._popupContent.querySelector('.popup__image').setAttribute('src', `${this._link}`);
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
     }
