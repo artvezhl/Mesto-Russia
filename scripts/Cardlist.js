@@ -6,7 +6,8 @@ class Cardlist {
         this._openPopupMethod = openPopupMethod;
     }
 
-    addCard(cardSample) {
+    addCard(name, link) {
+        this._container.appendChild(this._createCard(name, link, this._openPopupMethod).create());
     }
 
     render() {

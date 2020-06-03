@@ -6,15 +6,24 @@ class Card {
         this._link = link;
         this._popupOpenHandler = popupOpenHandler;
     }
-    // TODO разобраться почему при нажатии на корзину открывается попап
     create() {
         this._card = Card._template.cloneNode(true).children[0];
         this._card.querySelector('.place-card__name').textContent = this._name;
         this._card.querySelector('.place-card__image').style.backgroundImage = `url(${this._link})`;
-        this._card.querySelector('.place-card__like-icon').addEventListener('click', this._like);
-        this._card.querySelector('.place-card__delete-icon').addEventListener('click', this._remove);
-        this._card.querySelector('.place-card__image').addEventListener('click', this._popupOpenHandler);
+        this._card.addEventListener('click', this._cardClickHandler);
         return this._card;
+    }
+
+    _cardClickHandler = (event) => {
+        if (event.target.classList.contains('place-card__like-icon')) {
+            this._like(event);
+        }
+        if (event.target.classList.contains('place-card__delete-icon')) {
+            this._remove(event);
+        }
+        if (event.target.classList.contains('place-card__image')) {
+            this._popupOpenHandler(event);
+          }
     }
 
     _like(event) {

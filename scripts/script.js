@@ -22,10 +22,6 @@
 
 // НОВЫЙ КОД
 
-// TODO TEST PLACE
-
-// TODO TEST PLACE FINISHED
-
 // создание переменных для слушателей
 const popupContainer = document.querySelector('.popup-container');
 const editInfoButton = document.querySelector('.user-info__edit-button');
@@ -34,17 +30,20 @@ const addCardButton = document.querySelector('.user-info__button');
 // создание экземпляра класса ImagePopup
 const imagePopup = new ImagePopup(popupContainer);
 
-// создание экземпляра класса AddCardPopup
-const addCardPopup = new AddCardPopup(popupContainer);
+// создание экземпляра класса UserInfo без аргументов
+const userInfo = new UserInfo(document.querySelector('.user-info__name').textContent, document.querySelector('.user-info__job').textContent);
 
 // создание экземпляра класса AddCardPopup
-const editInfoPopup = new EditInfoPopup(popupContainer);
+const editInfoPopup = new EditInfoPopup(popupContainer, userInfo);
 
 // создание экземпляра класса Card без аргументов
 const createCard = (...arg) => new Card(...arg);
 
 // создание экземпляра Cardlist
 const cardList = new Cardlist(document.querySelector('.places-list'), initialCards, createCard, imagePopup.open);
+
+// создание экземпляра класса AddCardPopup
+const addCardPopup = new AddCardPopup(popupContainer, cardList);
 
 // слушатели событий
 editInfoButton.addEventListener('click', editInfoPopup.open);
@@ -54,6 +53,11 @@ addCardButton.addEventListener('click', addCardPopup.open);
 cardList.render();
 
 
+// TODO TEST PLACE
+// console.log(editInfoPopup.submitButtonHandler());
+// TODO TEST PLACE FINISHED
+
+// TODO сохранить функционал про сбрасывание ошибок и тд при закрытии формы
 
 // const placeCardImages = document.querySelectorAll('.place-card__image');
 // placeCardImages.forEach(elem => elem.addEventListener('click',(event) => {
