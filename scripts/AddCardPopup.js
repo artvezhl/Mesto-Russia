@@ -13,13 +13,9 @@ class AddCardPopup extends Popup {
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
         this.form = document.forms.new;
-        this._setListeners();
+        this.form.addEventListener('submit', this._handleAddCardSubmit);
         this.formValidator(this.form).setEventListeners();
         this.form.querySelector('.button').setAttribute('disabled', 'true');
-    }
-
-    _setListeners = () => {
-        this.form.addEventListener('submit', this._handleAddCardSubmit);
     }
 
     _handleAddCardSubmit = () => {
