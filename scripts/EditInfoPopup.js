@@ -35,5 +35,13 @@ class EditInfoPopup extends Popup {
         super.close();
         this._container.removeChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').removeEventListener('click', this.close);
+        this._resetFormErrors();
+    }
+
+    _resetFormErrors() {
+        const [...errorElements] = this.form.querySelectorAll('.error-message');
+        errorElements.forEach((elem) => {
+            elem.textContent = "";
+        });
     }
 }

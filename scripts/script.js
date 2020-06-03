@@ -55,13 +55,6 @@ addCardButton.addEventListener('click', addCardPopup.open);
 // отрасовка начальных карточек
 cardList.render();
 
-
-// TODO TEST PLACE
-// console.log(editInfoPopup.submitButtonHandler());
-// TODO TEST PLACE FINISHED
-
-// TODO сохранить функционал про сбрасывание ошибок и тд при закрытии формы
-
 // const placeCardImages = document.querySelectorAll('.place-card__image');
 // placeCardImages.forEach(elem => elem.addEventListener('click',(event) => {
 //     const popup = new ImagePopup(event.target.getAttribute('style').slice(22, -2).replace(/"/g, ""));
