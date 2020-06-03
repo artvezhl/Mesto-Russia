@@ -6,6 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mesto</title>
   <link rel="stylesheet" href="./pages/index.css">
+  <script src="scripts/Card.js" defer></script>
+  <script src="scripts/Cardlist.js" defer></script>
+  <script src="scripts/Popup.js" defer></script>
+  <script src="scripts/Image-popup.js" defer></script>
+  <script src="scripts/AddCardPopup.js" defer></script>
+  <script src="scripts/EditInfoPopup.js" defer></script>
+  <script src="scripts/UserInfo.js" defer></script>
+  <script src="scripts/FormValidator.js"></script>
+  <script src="blocks/place-card/place-card.js" defer></script>
+  <script src="scripts/script.js" defer></script>
 </head>
 <body>
   <div class="root">
@@ -67,12 +77,59 @@
         <img src="./images/close.svg" alt="" class="popup__close popup__close_place_image">
       </div>
     </div>-->
+
+    <template id="card-template" style="display: none;">
+        <div class="place-card">
+            <div class="place-card__image">
+                <button class="place-card__delete-icon"></button>
+            </div>
+            <div class="place-card__description">
+                <h3 class="place-card__name"></h3>
+                <button class="place-card__like-icon"></button>
+            </div>
+        </div>
+    </template>
+    <template id="add-card-popup" style="display: none;">
+        <div class="popup__content">
+            <img src="./images/close.svg" alt="" class="popup__close">
+            <h3 class="popup__title">Новое место</h3>
+            <form novalidate class="popup__form" name="new">
+                <div class="input__container">
+                    <input id="place" type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
+                    <span id="error-place" class="error-message error-message__hidden"></span>
+                </div>
+                <div class="input__container">
+                    <input id="url" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+                    <span id="error-url" class="error-message error-message__hidden"></span>
+                </div>
+                <button type="submit" class="button popup__button">+</button>
+            </form>
+        </div>
+    </template>
+    <template id="image-popup" style="display: none;">
+        <div class="popup__content popup__content_place_image">
+            <img src="" alt="" class="popup__image">
+            <img src="./images/close.svg" alt="" class="popup__close popup__close_place_image">
+        </div>
+    </template>
+    <template id="edit-info-popup" style="display: none;">
+        <div class="popup__content">
+            <img id="edit-cross-button" src="./images/close.svg" alt="" class="popup__close">
+            <h3 class="popup__title">Редактировать профиль</h3>
+            <form id="form" novalidate class="popup__form" name="edit">
+                <div class="input__container">
+                    <input id="name" type="text" minlength="2" maxlength="30" name="name" required class="popup__input popup__input_type_name" placeholder="Имя">
+                    <span id="error-name" class="error-message"></span>
+                </div>
+                <div class="input__container">
+                    <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
+                    <span id="error-about" class="error-message"></span>
+                </div>
+                <button id="submit" type="submit" class="button popup__button popup__button_place_profile popup__button_active">Сохранить</button>
+            </form>
+        </div>
+    </template>
+
   </div>
-  <script src="blocks/card/card.js"></script>
-  <script src="blocks/cardlist/cardlist.js"></script>
-  <script src="blocks/popup/popup.js"></script>
-  <script src="blocks/popups/image-popup.js"></script>
-  <script src="blocks/place-card/place-card.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
