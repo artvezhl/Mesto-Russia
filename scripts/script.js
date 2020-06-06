@@ -2,6 +2,8 @@
 const popupContainer = document.querySelector('.popup-container');
 const editInfoButton = document.querySelector('.user-info__edit-button');
 const addCardButton = document.querySelector('.user-info__button');
+const userName = document.querySelector('.user-info__name');
+const userAbout = document.querySelector('.user-info__job');
 
 // создание экземпляра класса FormValidator
 const formValidator = (...arg) => new FormValidator(...arg);
@@ -9,13 +11,8 @@ const formValidator = (...arg) => new FormValidator(...arg);
 // создание экземпляра класса ImagePopup
 const imagePopup = new ImagePopup(popupContainer);
 
-// создание экземпляра класса UserInfo без аргументов
-/* Можно лучше:
-
-Вынести селекторы для '.user-info__name' и '.user-info__job' в константы в начале файла, и передавать эти переменные
-в качестве аргументов при создании экземпляра класса userInfo
-*/
-const userInfo = new UserInfo(document.querySelector('.user-info__name').textContent, document.querySelector('.user-info__job').textContent);
+// создание экземпляра класса UserInfo
+const userInfo = new UserInfo(userName.textContent, userAbout.textContent);
 
 // создание экземпляра класса AddCardPopup
 const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator);
@@ -35,17 +32,3 @@ addCardButton.addEventListener('click', addCardPopup.open);
 
 // отрасовка начальных карточек
 cardList.render();
-
-/* REVIEW:
-
-Работа выполнена отлично, весь функционал реализован и работает как указано в задании, видно общее понимание принципов ООП, 
-в коде используются стрелочные функции и интерполяция строк из ES6, а также spread-оператор, здорово! Код логично организован, 
-методы классов и переменные имеют понятные и описательные названия, карточку нельзя добавить на страницу, если поля не заполнены. 
-Также очень круто, что используется наследование и в коде присутствуют уместные комментарии.
-
-По работе нет никаких критических замечаний, работа принята! Удачи в следующем спринте
-
-Можно лучше: 1) Избавиться от дублирования кода в классе CadrdList
-2) Вынести селекторы для '.user-info__name' и '.user-info__job' в константы в начале файла
-3) Реализовать закрытие попапов по клику на Escape(keycode = 27), либо по клику вне попапа
-*/

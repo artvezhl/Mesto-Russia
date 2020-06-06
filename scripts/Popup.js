@@ -9,6 +9,10 @@ class Popup {
 
     open() {
        this._toggle();
+       // TODO сделать закрытие на пустую область и на кнопку esc (keycode = 27)
+       // this._container.addEventListener('click', (evt) => {
+       //     if (!evt.target.className.includes('popup__content') && !evt.target.className.includes('popup__close')) this.close();
+       // });
     }
 
     /* Можно лучше:
