@@ -1,11 +1,12 @@
 class EditInfoPopup extends Popup {
     static _template = document.querySelector('#edit-info-popup').content;
 
-    constructor(popupContainer, userInfoObj, formValidator) {
+    constructor(popupContainer, userInfoObj, formValidator, api) {
         super(popupContainer);
         this._popupContent = EditInfoPopup._template.cloneNode(true).children[0];
         this.userInfoObj = userInfoObj;
         this.formValidator = formValidator;
+        this._api = api;
     }
 
     open = () => {
@@ -28,6 +29,7 @@ class EditInfoPopup extends Popup {
 
     _handleEditFormSubmit = () => {
         this.userInfoObj.setUserInfo(this.name.value, this.about.value);
+        this._api.editUserInfo(this.name.value, this.about.value);
         this.close();
     }
 

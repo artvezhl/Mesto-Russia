@@ -1,7 +1,17 @@
 class UserInfo {
-    constructor(name, info) {
-        this.name = name;
-        this.info = info;
+    constructor(api) {
+        this._api = api;
+    }
+
+    // метод отрисовки дефолтных имени, информации и аватарки
+    renderDefaultInfo() {
+        this._api.getUserInfo().then(res => {
+            this.name = res.name;
+            this.info = res.about;
+            userName.textContent = res.name;
+            userAbout.textContent = res.about;
+            userAva.style.backgroundImage = `url(${res.avatar})`;
+        });
     }
 
     // обновлять данные внутри экземпляра класса

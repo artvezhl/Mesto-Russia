@@ -11,8 +11,10 @@ class Cardlist {
     }
 
     render() {
-        this._startCards.forEach((card) => {
-            this.addCard(card.name, card.link);
+        this._startCards.then(res => {
+            res.forEach((card) => {
+                this.addCard(card.name, card.link);
+            });
         });
     }
 }
