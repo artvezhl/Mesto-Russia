@@ -21,25 +21,22 @@ class Api {
     editUserInfo(name, about) {
         fetch('https://praktikum.tk/cohort11/users/me', {
             method: 'PATCH',
-            headers: {
-                authorization: '6a4cb1c5-9817-4f1e-b991-c86219eada0b',
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 name: name,
                 about: about
             })
         });
-        // fetch(`${this._url}/users/me`, {
-        //     method: 'PATCH',
-        //     headers: {
-        //         this._headers,
-        //     },
-        //     body: JSON.stringify({
-        //         name: name,
-        //         about: about
-        //     })
-        // })
-        //     .then(res => res.json());
+    };
+
+    addNewCard(name, link) {
+        fetch('https://praktikum.tk/cohort11/cards', {
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({
+                name: name,
+                link: link
+            })
+        });
     }
 }

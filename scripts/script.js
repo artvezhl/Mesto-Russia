@@ -32,7 +32,7 @@ const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator,
 const createCard = (...arg) => new Card(...arg);
 
 // создание экземпляра Cardlist
-const cardList = new Cardlist(document.querySelector('.places-list'), api.getInitialCards(), createCard, imagePopup.open);
+const cardList = new Cardlist(document.querySelector('.places-list'), api.getInitialCards(), createCard, imagePopup.open, api);
 
 // создание экземпляра класса AddCardPopup
 const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator);
@@ -40,10 +40,6 @@ const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator);
 // слушатели событий
 editInfoButton.addEventListener('click', editInfoPopup.open);
 addCardButton.addEventListener('click', addCardPopup.open);
-
-// TODO Test area start
-
-// TODO Test area end
 
 // отрисовка начальных имени, инфо и аватарки
 userInfo.renderDefaultInfo();
