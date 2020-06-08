@@ -1,11 +1,12 @@
 class AddCardPopup extends Popup {
     static _template = document.querySelector('#add-card-popup').content;
 
-    constructor(popupContainer, cardlist, formValidator) {
+    constructor(popupContainer, cardlist, formValidator, api) {
         super(popupContainer);
         this._popupContent = AddCardPopup._template.cloneNode(true).children[0];
         this.cardlist = cardlist;
         this.formValidator = formValidator;
+        this._api = api;
     }
 
     open = () => {
@@ -20,6 +21,7 @@ class AddCardPopup extends Popup {
 
     _handleAddCardSubmit = () => {
         this.cardlist.addCard(this.form.name.value, this.form.link.value);
+        this._api.addNewCard(this.form.name.value, this.form.link.value);
         this._resetForm();
         this.close();
     }

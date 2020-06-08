@@ -38,46 +38,6 @@
     </div>
     <div class="popup-container popup">
     </div>
-    <!--<div class="popup popup-card">
-      <div class="popup__content">
-        <img src="./images/close.svg" alt="" class="popup__close">
-        <h3 class="popup__title">Новое место</h3>
-        <form novalidate class="popup__form" name="new">
-            <div class="input__container">
-                <input id="place" type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
-                <span id="error-place" class="error-message error-message__hidden"></span>
-            </div>
-            <div class="input__container">
-                <input id="url" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
-                <span id="error-url" class="error-message error-message__hidden"></span>
-            </div>
-            <button type="submit" class="button popup__button">+</button>
-        </form>
-      </div>
-    </div>
-    <div class="popup popup-profile">
-      <div class="popup__content">
-        <img id="edit-cross-button" src="./images/close.svg" alt="" class="popup__close">
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <form id="form" novalidate class="popup__form" name="edit">
-            <div class="input__container">
-                <input id="name" type="text" minlength="2" maxlength="30" name="name" required class="popup__input popup__input_type_name" placeholder="Имя">
-                <span id="error-name" class="error-message"></span>
-            </div>
-            <div class="input__container">
-                <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
-                <span id="error-about" class="error-message"></span>
-            </div>
-            <button id="submit" type="submit" class="button popup__button popup__button_place_profile popup__button_active">Сохранить</button>
-        </form>
-      </div>
-    </div>
-    <div class="popup popup-image">
-      <div class="popup__content popup__content_place_image">
-        <img src="" alt="" class="popup__image">
-        <img src="./images/close.svg" alt="" class="popup__close popup__close_place_image">
-      </div>
-    </div>-->
 
     <template id="card-template" style="display: none;">
         <div class="place-card">
@@ -86,7 +46,10 @@
             </div>
             <div class="place-card__description">
                 <h3 class="place-card__name"></h3>
-                <button class="place-card__like-icon"></button>
+                <div class="place-card__like-container">
+                    <button class="place-card__like-icon"></button>
+                    <p class="place-card__like-number">1</p>
+                </div>
             </div>
         </div>
     </template>

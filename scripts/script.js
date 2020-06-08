@@ -32,10 +32,10 @@ const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator,
 const createCard = (...arg) => new Card(...arg);
 
 // создание экземпляра Cardlist
-const cardList = new Cardlist(document.querySelector('.places-list'), api.getInitialCards(), createCard, imagePopup.open, api);
+const cardList = new Cardlist(document.querySelector('.places-list'), api.getInitialCards(), createCard, imagePopup.open);
 
 // создание экземпляра класса AddCardPopup
-const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator);
+const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, api);
 
 // слушатели событий
 editInfoButton.addEventListener('click', editInfoPopup.open);
