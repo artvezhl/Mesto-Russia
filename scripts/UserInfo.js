@@ -5,16 +5,18 @@ class UserInfo {
 
     // метод отрисовки дефолтных имени, информации и аватарки
     renderDefaultInfo() {
-        this._api.getUserInfo().then(res => {
-            this.name = res.name;
-            this.info = res.about;
-            userName.textContent = res.name;
-            userAbout.textContent = res.about;
-            userAva.style.backgroundImage = `url(${res.avatar})`;
-        });
+        this._api.getUserInfo()
+            .then(res => {
+                this.name = res.name;
+                this.info = res.about;
+                userName.textContent = res.name;
+                userAbout.textContent = res.about;
+                userAva.style.backgroundImage = `url(${res.avatar})`;
+            })
+            .catch(err => console.log(err));
     }
 
-    // обновлять данные внутри экземпляра класса
+    // обновление данные внутри экземпляра класса
     setUserInfo(newName, newInfo) {
         this.name = newName;
         this.info = newInfo;

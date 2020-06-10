@@ -20,7 +20,7 @@ class AddCardPopup extends Popup {
     }
 
     _handleAddCardSubmit = () => {
-        this.cardlist.addCard(this.form.name.value, this.form.link.value);
+        this.cardlist.addCard({name: this.form.name.value, link: this.form.link.value});
         this._api.addNewCard(this.form.name.value, this.form.link.value);
         this._resetForm();
         this.close();
