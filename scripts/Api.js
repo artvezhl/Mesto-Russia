@@ -9,7 +9,13 @@ class Api {
         return fetch(`${this._url}/users/me`, {
             headers: this._headers
         })
-            .then(res => res.json());
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+
+                return Promise.reject("Произошла ошибка");
+            });
     };
 
     // запрос стартовых карточек с сервера
@@ -17,12 +23,18 @@ class Api {
         return fetch(`${this._url}/cards`, {
             headers: this._headers
         })
-            .then(res => res.json());
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+
+                return Promise.reject("Произошла ошибка");
+            });
     };
 
     // изменение данных о пользователе на сервере
     editUserInfo(name, about) {
-        fetch(`${this._url}/users/me`, {
+        return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
@@ -30,26 +42,12 @@ class Api {
                 about: about
             })
         })
-            .then(res => res.json());
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+
+                return Promise.reject("Произошла ошибка");
+            });
     };
-
-    addNewCard(name, link) {
-        fetch(`${this._url}/cards`, {
-            method: 'POST',
-            headers: this._headers,
-            body: JSON.stringify({
-                name: name,
-                link: link
-            })
-        })
-            .then(res => res.json());
-    }
-
-    deleteCard(id) {
-        fetch(`${this._url}/cards/${id}`, {
-            method: 'DELETE',
-            headers: this._headers
-        })
-            .then(res => res.json())
-    }
 }

@@ -7,11 +7,8 @@ class Cardlist {
     }
 
     addCard(data) {
-        this._container.appendChild(this._card(data, api.deleteCard, this._openPopupMethod).create());
+        this._container.appendChild(this._card(data, this._openPopupMethod).create());
         this._container.querySelector('.place-card').setAttribute('data-id', `${data._id}`);
-
-        // console.log(data.likes.length);
-        // this._container.querySelector('.place-card__like-number').textContent = data.likes.length;
     }
 
     render() {
@@ -22,6 +19,6 @@ class Cardlist {
                     this.addCard(item);
                 })
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }
 }

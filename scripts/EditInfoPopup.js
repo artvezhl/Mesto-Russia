@@ -28,8 +28,11 @@ class EditInfoPopup extends Popup {
     }
 
     _handleEditFormSubmit = () => {
-        this.userInfoObj.setUserInfo(this.name.value, this.about.value);
-        this._api.editUserInfo(this.name.value, this.about.value);
+        this._api.editUserInfo(this.name.value, this.about.value)
+            .then((obj) => {
+                this.userInfoObj.setUserInfo(obj.name, obj.about);
+            })
+            .catch(err => console.log(err));
         this.close();
     }
 
