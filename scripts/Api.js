@@ -17,18 +17,6 @@ class Api {
         return fetch(`${this._url}/users/me`, {
             headers: this._headers
         })
-        /* DONE
-            Можно лучше: проверка ответа сервера и преобразование из json
-            дублируется во всех методах класса Api, лучше вынести в отдельный метод:
-                _getResponseData(res) {
-                    if (!res.ok) {
-                        return Promise.reject(`Ошибка: ${res.status}`); 
-                    }
-                    return res.json();
-                }
-            Подчеркивание в начале имени метода говорит о том, что метод является приватным, т.е.
-            не используется вне класса Api   
-        */
             .then(res => this._getResponseData(res));
     };
 
