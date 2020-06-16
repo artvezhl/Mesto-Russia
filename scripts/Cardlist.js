@@ -14,7 +14,6 @@ class Cardlist {
     render() {
         this._getInitialCards
             .then(res => {
-                console.log(res);
                 res.forEach((item) => {
                     this.addCard(item);
                 })

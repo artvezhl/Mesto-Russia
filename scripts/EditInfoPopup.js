@@ -27,13 +27,22 @@ class EditInfoPopup extends Popup {
         this.form.addEventListener('submit', this._handleEditFormSubmit);
     }
 
-    _handleEditFormSubmit = () => {
+    _handleEditFormSubmit = (event) => {
+        event.preventDefault()
         this._api.editUserInfo(this.name.value, this.about.value)
             .then((obj) => {
                 this.userInfoObj.setUserInfo(obj.name, obj.about);
+                this.close();
             })
-            .catch(err => console.log(err));
-        this.close();
+        .catch(err => console.log(err));
+        /* DONE
+            Надо исправить: все изменения на странице должны происходить, только после того, как
+            сервер ответил подтверждением. Если сервер не ответил, или ответил ошибкой, а
+            данные на странице сохраняться, то это может ввести пользователя в заблуждение
+            Попап так же нужно закрывать только если сервер ответил подтверждением, иначе
+            если запрос завершиться ошибкой, а попап закроется пользователь может подумать
+            что данные сохранились, т.е. перенести закрытие попапа в блок then
+        */
     }
 
     close = () => {

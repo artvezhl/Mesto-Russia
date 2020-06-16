@@ -1,6 +1,8 @@
 class UserInfo {
-    constructor(api) {
+    constructor(api, nameNode, aboutNode) {
         this._api = api;
+        this._nameNode = nameNode;
+        this._aboutNode = aboutNode;
     }
 
     // метод отрисовки дефолтных имени, информации и аватарки
@@ -25,7 +27,15 @@ class UserInfo {
 
     // отображать данные на странице (обновлять данные на странице с учетом того, что введено в форме)
     updateUserInfo() {
-        document.querySelector('.user-info__name').textContent = this.name;
-        document.querySelector('.user-info__job').textContent = this.info;
+        /* DONE
+            Надо исправить: передавать элементы document.querySelector('.user-info__name')
+            document.querySelector('.user-info__job') как параметры конструктора класса, а не 
+            выполнять глобальный поиск на странице в классе, это привязывает класс
+            к странице, где есть элементы именно с такими селекторами и делает его не 
+            переиспользуемым
+        
+        */
+        this._nameNode.textContent = this.name;
+        this._aboutNode.textContent = this.info;
     }
 }

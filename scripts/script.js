@@ -23,7 +23,7 @@ const formValidator = (...arg) => new FormValidator(...arg);
 const imagePopup = new ImagePopup(popupContainer);
 
 // создание экземпляра класса UserInfo
-const userInfo = new UserInfo(api);
+const userInfo = new UserInfo(api, userName, userAbout);
 
 // создание экземпляра класса AddCardPopup
 const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator, api);
@@ -47,5 +47,16 @@ userInfo.renderDefaultInfo();
 // отрасовка начальных карточек
 cardList.render();
 
-// TODO прописать везде catch
-// TODO сделать везде изменения на сайте только после отправки данных, тоесть добавить все изменения в then
+/* DONE
+    Неплохая работа, класс Api создан, запросы на сервер выполняются. Но к организации кода есть замечания:
+
+    Надо исправить:
+    - закрывать попап только если запрос на сервер выполнился успешно
+    - небольшое замечание по прошлому спринту - в классе UserInfo передавать 
+    элементы document.querySelector('.user-info__name')  document.querySelector('.user-info__job')
+    как параметры конструктора класса, а не выполнять глобальный поиск на странице в классе
+
+    Можно лучше: 
+    - проверка ответа сервера и преобразование из json
+    дублируется во всех методах класса Api, лучше вынести в отдельный метод
+*/
