@@ -6,6 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mesto</title>
   <link rel="stylesheet" href="./pages/index.css">
+  <script src="scripts/Api.js" defer></script>
+  <script src="scripts/Card.js" defer></script>
+  <script src="scripts/Cardlist.js" defer></script>
+  <script src="scripts/Popup.js" defer></script>
+  <script src="scripts/Image-popup.js" defer></script>
+  <script src="scripts/AddCardPopup.js" defer></script>
+  <script src="scripts/EditInfoPopup.js" defer></script>
+  <script src="scripts/UserInfo.js" defer></script>
+  <script src="scripts/FormValidator.js"></script>
+  <script src="blocks/place-card/place-card.js" defer></script>
+  <script src="scripts/script.js" defer></script>
 </head>
 <body>
   <div class="root">
@@ -16,8 +27,8 @@
       <div class="user-info">
         <div class="user-info__photo"></div>
         <div class="user-info__data">
-          <h1 class="user-info__name">Jacques Cousteau</h1>
-          <p class="user-info__job">Sailor, researcher</p>
+          <h1 class="user-info__name"></h1>
+          <p class="user-info__job"></p>
           <button class="button user-info__edit-button">Edit</button>
         </div>
         <button class="button user-info__button">+</button>
@@ -25,48 +36,64 @@
     </div>
     <div class="places-list root__section">
     </div>
-    <div class="popup popup-card">
-      <div class="popup__content">
-        <img src="./images/close.svg" alt="" class="popup__close">
-        <h3 class="popup__title">Новое место</h3>
-        <form novalidate class="popup__form" name="new">
-            <div class="input__container">
-                <input id="place" type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
-                <span id="error-place" class="error-message error-message__hidden"></span>
-            </div>
-            <div class="input__container">
-                <input id="url" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
-                <span id="error-url" class="error-message error-message__hidden"></span>
-            </div>
-            <button type="submit" class="button popup__button">+</button>
-        </form>
-      </div>
+    <div class="popup-container popup">
     </div>
-    <div class="popup popup-profile">
-      <div class="popup__content">
-        <img id="edit-cross-button" src="./images/close.svg" alt="" class="popup__close">
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <form id="form" novalidate class="popup__form" name="edit">
-            <div class="input__container">
-                <input id="name" type="text" minlength="2" maxlength="30" name="name" required class="popup__input popup__input_type_name" placeholder="Имя">
-                <span id="error-name" class="error-message"></span>
+
+    <template id="card-template" style="display: none;">
+        <div class="place-card">
+            <div class="place-card__image">
+                <button class="place-card__delete-icon"></button>
             </div>
-            <div class="input__container">
-                <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
-                <span id="error-about" class="error-message"></span>
+            <div class="place-card__description">
+                <h3 class="place-card__name"></h3>
+                <div class="place-card__like-container">
+                    <button class="place-card__like-icon"></button>
+                    <p class="place-card__like-number"></p>
+                </div>
             </div>
-            <button id="submit" type="submit" class="button popup__button popup__button_place_profile popup__button_active">Сохранить</button>
-        </form>
-      </div>
-    </div>
-    <div class="popup popup-image">
-      <div class="popup__content popup__content_place_image">
-        <img src="" alt="" class="popup__image">
-        <img src="./images/close.svg" alt="" class="popup__close popup__close_place_image">
-      </div>
-    </div>
+        </div>
+    </template>
+    <template id="add-card-popup" style="display: none;">
+        <div class="popup__content">
+            <img src="./images/close.svg" alt="" class="popup__close">
+            <h3 class="popup__title">Новое место</h3>
+            <form novalidate class="popup__form" name="new">
+                <div class="input__container">
+                    <input id="place" type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
+                    <span id="error-place" class="error-message error-message__hidden"></span>
+                </div>
+                <div class="input__container">
+                    <input id="url" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+                    <span id="error-url" class="error-message error-message__hidden"></span>
+                </div>
+                <button type="submit" class="button popup__button">+</button>
+            </form>
+        </div>
+    </template>
+    <template id="image-popup" style="display: none;">
+        <div class="popup__content popup__content_place_image">
+            <img src="" alt="" class="popup__image">
+            <img src="./images/close.svg" alt="" class="popup__close popup__close_place_image">
+        </div>
+    </template>
+    <template id="edit-info-popup" style="display: none;">
+        <div class="popup__content">
+            <img id="edit-cross-button" src="./images/close.svg" alt="" class="popup__close">
+            <h3 class="popup__title">Редактировать профиль</h3>
+            <form id="form" novalidate class="popup__form" name="edit">
+                <div class="input__container">
+                    <input id="name" type="text" minlength="2" maxlength="30" name="name" required class="popup__input popup__input_type_name" placeholder="Имя">
+                    <span id="error-name" class="error-message"></span>
+                </div>
+                <div class="input__container">
+                    <input id="about" type="text" minlength="2" maxlength="30" name="about" required class="popup__input popup__input_type_link-url" placeholder="О себе">
+                    <span id="error-about" class="error-message"></span>
+                </div>
+                <button id="submit" type="submit" class="button popup__button popup__button_place_profile popup__button_active">Сохранить</button>
+            </form>
+        </div>
+    </template>
+
   </div>
-  <script src="blocks/place-card/place-card.js"></script>
-  <script src="script.js"></script>
 </body>
 </html>
