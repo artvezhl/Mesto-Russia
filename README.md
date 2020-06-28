@@ -1,6 +1,7 @@
 # Mesto-Russia
 Yandex Praktikum training project
-[Посмотреть проект](https://mesto-russia-d4j1fi22y.vercel.app/)
+
+[Ссылка на проект](https://mesto-russia-d4j1fi22y.vercel.app/)
 
 ## Учебный проект, в котором с помощью JS реализованы: 
 - открытие popup c редактированием профиля, добавлением карточки в разметку и увеличением картинки
