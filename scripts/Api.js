@@ -40,4 +40,17 @@ class Api {
         })
             .then(res => this._getResponseData(res));
     };
+
+    // добавление новой карточки на сервер
+    addNewCard(name, link) {
+        return fetch(`${this._url}/cards`, {
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({
+                name: name,
+                link: link
+            })
+        })
+            .then(res => this._getResponseData(res));
+    }
 }

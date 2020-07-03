@@ -1,21 +1,16 @@
 class UserInfo {
-    constructor(api, nameNode, aboutNode) {
-        this._api = api;
+    constructor(nameNode, aboutNode) {
         this._nameNode = nameNode;
         this._aboutNode = aboutNode;
     }
 
     // метод отрисовки дефолтных имени, информации и аватарки
-    renderDefaultInfo() {
-        this._api.getUserInfo()
-            .then(res => {
-                this.name = res.name;
-                this.info = res.about;
-                userName.textContent = res.name;
-                userAbout.textContent = res.about;
-                userAva.style.backgroundImage = `url(${res.avatar})`;
-            })
-            .catch(err => console.log(err));
+    renderDefaultInfo(userData) {
+        this.name = userData.name;
+        this.info = userData.about;
+        userName.textContent = userData.name;
+        userAbout.textContent = userData.about;
+        userAva.style.backgroundImage = `url(${userData.avatar})`;
     }
 
     // обновление данные внутри экземпляра класса
