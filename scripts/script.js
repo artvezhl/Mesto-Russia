@@ -23,7 +23,7 @@ const formValidator = (...arg) => new FormValidator(...arg);
 const imagePopup = new ImagePopup(popupContainer);
 
 // создание экземпляра класса UserInfo
-const userInfo = new UserInfo(api, userName, userAbout);
+const userInfo = new UserInfo(userName, userAbout);
 
 // создание экземпляра класса AddCardPopup
 const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator, api);
@@ -32,7 +32,7 @@ const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator,
 const createCard = (...arg) => new Card(...arg);
 
 // создание экземпляра Cardlist
-const cardList = new Cardlist(document.querySelector('.places-list'), api.getInitialCards(), createCard, imagePopup.open);
+const cardList = new Cardlist(document.querySelector('.places-list'), createCard, imagePopup.open);
 
 // создание экземпляра класса AddCardPopup
 const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, api);
@@ -41,48 +41,23 @@ const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, a
 editInfoButton.addEventListener('click', editInfoPopup.open);
 addCardButton.addEventListener('click', addCardPopup.open);
 
-// отрисовка начальных имени, инфо и аватарки
-userInfo.renderDefaultInfo();
 
-// отрасовка начальных карточек
-cardList.render();
-
-/* DONE
-    Неплохая работа, класс Api создан, запросы на сервер выполняются. Но к организации кода есть замечания:
-
-    Надо исправить:
-    - закрывать попап только если запрос на сервер выполнился успешно
-    - небольшое замечание по прошлому спринту - в классе UserInfo передавать 
-    элементы document.querySelector('.user-info__name')  document.querySelector('.user-info__job')
-    как параметры конструктора класса, а не выполнять глобальный поиск на странице в классе
-
-    Можно лучше: 
-    - проверка ответа сервера и преобразование из json
-    дублируется во всех методах класса Api, лучше вынести в отдельный метод
-*/
+Promise.all([
+    api.getUserInfo(),
+    api.getInitialCards()
+])
+    .then((values) => {
+        const [userData, initialCards] = values;
+        // отрисовка начальных имени, инфо и аватарки
+        userInfo.renderDefaultInfo(userData);
+        // отрасовка начальных карточек
+        cardList.render(initialCards);
+    })
+    .catch((err)=>{     //попадаем сюда если один из промисов завершаться ошибкой
+        console.log(err);
+    })
 
 /*
-  Отлично, все замечания исправлены
-
-  Для закрепления полученных знаний советую сделать и оставшуюся часть задания.
-  Что бы реализовать оставшуюся часть задания необходимо разобраться с Promise.all
-  https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-  Т.к. для отрисовки карточек нужен id пользователя, поэтому отрисовать мы сможем их только
-  после полученния с сервера данных пользователя
-  Выглядит этот код примерно так:
-    Promise.all([     //в Promise.all передаем массив промисов которые нужно выполнить
-      this.api.getUserData(),
-      this.api.getInitialCards()
-    ])    
-      .then((values)=>{    //попадаем сюда когда оба промиса будут выполнены
-        const [userData, initialCards] = values;
-        ......................  //все данные получены, отрисовываем страницу
-      })
-      .catch((err)=>{     //попадаем сюда если один из промисов завершаться ошибкой
-        console.log(err);
-      })
-      
-
   Если у Вас будет свободное время так же попробуйте освоить работу с сервером
   применив async/await для работы с асинхронными запросами.
   https://learn.javascript.ru/async-await
