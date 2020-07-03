@@ -19,10 +19,15 @@ class AddCardPopup extends Popup {
         this.form.querySelector('.button').setAttribute('disabled', 'true');
     }
 
-    _handleAddCardSubmit = () => {
-        this.cardlist.addCard({name: this.form.name.value, link: this.form.link.value});
-        this._resetForm();
-        this.close();
+    _handleAddCardSubmit = (event) => {
+        event.preventDefault();
+        this._api.addNewCard(this.form.name.value, this.form.link.value)
+            .then((obj) => {
+                this.cardlist.addCard({name: obj.name, link: obj.link});
+                this._resetForm();
+                this.close();
+            })
+            .catch(err => console.log(err));
     }
 
     _resetForm() {
