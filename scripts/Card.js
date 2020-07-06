@@ -50,11 +50,13 @@ class Card {
         const placesList = event.target.closest('.places-list');
         const currentCard = event.target.closest('div.place-card');
         const cardId = currentCard.getAttribute('data-id');
-        this._api.removeCard(cardId)
-            .then(() => {
-            this._removeListeners();
-            placesList.removeChild(currentCard);
-        })
-            .catch(err => console.log(err));
+        if (window.confirm('Вы действительно хотите удалить эту карточку?')) {
+            this._api.removeCard(cardId)
+                .then(() => {
+                    this._removeListeners();
+                    placesList.removeChild(currentCard);
+                })
+                .catch(err => console.log(err));
+        }
     }
 }
