@@ -1,9 +1,10 @@
 class Card {
     static _template = document.querySelector('#card-template').content;
 
-    constructor(data, popupOpenHandler) {
+    constructor(data, popupOpenHandler, api) {
         this._data = data;
         this._popupOpenHandler = popupOpenHandler;
+        this._api = api;
     }
 
     create() {
@@ -45,9 +46,15 @@ class Card {
 
     _remove = (event) => {
         event.stopPropagation();
+        event.preventDefault();
         const placesList = event.target.closest('.places-list');
         const currentCard = event.target.closest('div.place-card');
-        this._removeListeners();
-        placesList.removeChild(currentCard);
+        const cardId = currentCard.getAttribute('data-id');
+        this._api.removeCard(cardId)
+            .then(() => {
+            this._removeListeners();
+            placesList.removeChild(currentCard);
+        })
+            .catch(err => console.log(err));
     }
 }

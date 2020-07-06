@@ -53,4 +53,13 @@ class Api {
         })
             .then(res => this._getResponseData(res));
     }
+
+    // удаление карточки с сервера
+    removeCard(cardId) {
+        return fetch(`${this._url}/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: this._headers
+        })
+            .then(res => this._getResponseData(res));
+    }
 }

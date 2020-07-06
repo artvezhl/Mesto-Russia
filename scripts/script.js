@@ -32,7 +32,7 @@ const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator,
 const createCard = (...arg) => new Card(...arg);
 
 // создание экземпляра Cardlist
-const cardList = new Cardlist(document.querySelector('.places-list'), createCard, imagePopup.open);
+const cardList = new Cardlist(document.querySelector('.places-list'), createCard, imagePopup.open, api);
 
 // создание экземпляра класса AddCardPopup
 const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, api);
