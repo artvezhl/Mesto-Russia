@@ -23,7 +23,7 @@ class AddCardPopup extends Popup {
         event.preventDefault();
         this._api.addNewCard(this.form.name.value, this.form.link.value)
             .then((obj) => {
-                this.cardlist.addCard({name: obj.name, link: obj.link});
+                this.cardlist.addNewCard(obj);
                 this._resetForm();
                 this.close();
             })

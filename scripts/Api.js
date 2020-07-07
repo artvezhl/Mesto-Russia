@@ -53,4 +53,31 @@ class Api {
         })
             .then(res => this._getResponseData(res));
     }
+
+    // удаление карточки с сервера
+    removeCard(cardId) {
+        return fetch(`${this._url}/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: this._headers
+        })
+            .then(res => this._getResponseData(res));
+    }
+
+    // постановка лайка
+    setLike(cardId) {
+        return fetch(`${this._url}/cards/like/${cardId}`, {
+            method: 'PUT',
+            headers: this._headers
+        })
+            .then(res => this._getResponseData(res));
+    }
+
+    // удаление лайка
+    removeLike(cardId) {
+        return fetch(`${this._url}/cards/like/${cardId}`, {
+            method: 'DELETE',
+            headers: this._headers
+        })
+            .then(res => this._getResponseData(res));
+    }
 }
