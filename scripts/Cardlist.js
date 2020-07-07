@@ -12,7 +12,6 @@ class Cardlist {
     }
 
     addNewCard(data) {
-        console.log(data);
         this._container.appendChild(this._card(data, this._openPopupMethod, this.api).createNewCard());
         this._container.querySelector('.place-card').setAttribute('data-id', `${data._id}`);
     }
