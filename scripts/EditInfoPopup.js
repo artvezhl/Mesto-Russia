@@ -28,10 +28,13 @@ class EditInfoPopup extends Popup {
     }
 
     _handleEditFormSubmit = (event) => {
-        event.preventDefault()
+        event.preventDefault();
+        const buttonText = document.querySelector('.popup__button_place_profile');
+        buttonText.textContent = 'Загрузка...';
         this._api.editUserInfo(this.name.value, this.about.value)
             .then((obj) => {
                 this.userInfoObj.setUserInfo(obj.name, obj.about);
+                buttonText.textContent = 'Сохранить';
                 this.close();
             })
         .catch(err => console.log(err));

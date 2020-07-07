@@ -1,10 +1,10 @@
-class AddCardPopup extends Popup {
-    static _template = document.querySelector('#add-card-popup').content;
+class AvatarPopup extends Popup {
+    static _template = document.querySelector('#change-avatar-popup').content;
 
-    constructor(popupContainer, cardlist, formValidator, api) {
+    constructor(popupContainer, userInfo, formValidator, api) {
         super(popupContainer);
-        this._popupContent = AddCardPopup._template.cloneNode(true).children[0];
-        this.cardlist = cardlist;
+        this._popupContent = AvatarPopup._template.cloneNode(true).children[0];
+        this._userInfo = userInfo;
         this.formValidator = formValidator;
         this._api = api;
     }
@@ -13,20 +13,18 @@ class AddCardPopup extends Popup {
         super.open();
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
-        this.form = document.forms.new;
-        this.form.addEventListener('submit', this._handleAddCardSubmit);
+        this.form = document.forms.ava;
+        this.form.addEventListener('submit', this._handleChangeAvaSubmit);
         this.formValidator(this.form).setEventListeners();
         this.form.querySelector('.button').setAttribute('disabled', 'true');
     }
 
-    _handleAddCardSubmit = (event) => {
+    _handleChangeAvaSubmit = (event) => {
         event.preventDefault();
-        const buttonText = document.querySelector('.popup__button');
-        buttonText.textContent = 'Загрузка...';
-        this._api.addNewCard(this.form.name.value, this.form.link.value)
-            .then((obj) => {
-                this.cardlist.addNewCard(obj);
-                buttonText.textContent = '+';
+        console.log(this.form.link.value);
+        this._api.changeAvatar(`${this.form.link.value}`)
+            .then(() => {
+                this._userInfo.setAvatar(`${this.form.link.value}`);
                 this._resetForm();
                 this.close();
             })
@@ -41,6 +39,7 @@ class AddCardPopup extends Popup {
         super.close();
         this._container.removeChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').removeEventListener('click', this.close);
+        this._resetForm();
         this._resetFormErrors();
     }
 

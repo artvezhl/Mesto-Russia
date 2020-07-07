@@ -18,7 +18,7 @@ class Api {
             headers: this._headers
         })
             .then(res => this._getResponseData(res));
-    };
+    }
 
     // запрос стартовых карточек с сервера
     getInitialCards() {
@@ -26,7 +26,7 @@ class Api {
             headers: this._headers
         })
             .then(res => this._getResponseData(res));
-    };
+    }
 
     // изменение данных о пользователе на сервере
     editUserInfo(name, about) {
@@ -39,7 +39,7 @@ class Api {
             })
         })
             .then(res => this._getResponseData(res));
-    };
+    }
 
     // добавление новой карточки на сервер
     addNewCard(name, link) {
@@ -77,6 +77,18 @@ class Api {
         return fetch(`${this._url}/cards/like/${cardId}`, {
             method: 'DELETE',
             headers: this._headers
+        })
+            .then(res => this._getResponseData(res));
+    }
+
+    // изменение аватарки
+    changeAvatar(avatar) {
+        return fetch(`${this._url}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify({
+                avatar: `${avatar}`
+            })
         })
             .then(res => this._getResponseData(res));
     }
