@@ -7,6 +7,7 @@ class Card {
         this._api = api;
     }
 
+    // метод отрисовки карточек с сервера
     create() {
         this._card = Card._template.cloneNode(true).children[0];
         this._card.querySelector('.place-card__name').textContent = this._data.name;
@@ -20,8 +21,8 @@ class Card {
             this._cardLikes.textContent = 0;
         }
         const deleteButton = this._card.querySelector('.place-card__delete-icon');
-        // TODO сделать чтобы карточка сразу после добавления была с активной кнопкой удаления
         // отрисовка активной кнопки удаления если карточка может быть удалена
+        // console.log(this._data);
         if (this._data.owner && this._data.owner._id === "bed1ef91b1eb9c081562b68f") {
             deleteButton.setAttribute('style', 'display: block');
         }
@@ -29,6 +30,20 @@ class Card {
         if (this._likes.find(item => item._id === "bed1ef91b1eb9c081562b68f")) {
             likeIcon.classList.add('place-card__like-icon_liked');
         }
+        this._card.setAttribute('data-id', `${this._data._id}`);
+        this._cardImage = this._card.querySelector('.place-card__image');
+        this._cardImage.style.backgroundImage = `url(${this._data.link})`;
+        this._setListeners();
+        return this._card;
+    }
+
+    // метод отрисовки добавленной карточки
+    createNewCard() {
+        this._card = Card._template.cloneNode(true).children[0];
+        this._card.querySelector('.place-card__name').textContent = this._data.name;
+        this._cardLikes = this._card.querySelector('.place-card__like-number');
+        this._cardLikes.textContent = 0;
+        this._card.querySelector('.place-card__delete-icon').setAttribute('style', 'display: block');
         this._card.setAttribute('data-id', `${this._data._id}`);
         this._cardImage = this._card.querySelector('.place-card__image');
         this._cardImage.style.backgroundImage = `url(${this._data.link})`;
