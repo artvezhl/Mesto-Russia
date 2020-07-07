@@ -21,9 +21,12 @@ class AddCardPopup extends Popup {
 
     _handleAddCardSubmit = (event) => {
         event.preventDefault();
+        const buttonText = document.querySelector('.popup__button');
+        buttonText.textContent = 'Загрузка...';
         this._api.addNewCard(this.form.name.value, this.form.link.value)
             .then((obj) => {
                 this.cardlist.addNewCard(obj);
+                buttonText.textContent = '+';
                 this._resetForm();
                 this.close();
             })
