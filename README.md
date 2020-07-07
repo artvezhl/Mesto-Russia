@@ -1,6 +1,8 @@
 # Mesto-Russia
 Yandex Praktikum training project
 
+Version 1.0.0
+
 [Ссылка на проект](https://mesto-russia-d4j1fi22y.vercel.app/)
 
 ## Учебный проект, в котором с помощью JS реализованы: 
