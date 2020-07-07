@@ -12,6 +12,7 @@
   <script src="scripts/Popup.js" defer></script>
   <script src="scripts/Image-popup.js" defer></script>
   <script src="scripts/AddCardPopup.js" defer></script>
+  <script src="scripts/AvatarPopup.js" defer></script>
   <script src="scripts/EditInfoPopup.js" defer></script>
   <script src="scripts/UserInfo.js" defer></script>
   <script src="scripts/FormValidator.js"></script>
@@ -93,6 +94,21 @@
             </form>
         </div>
     </template>
+    <template id="change-avatar-popup" style="display: none;">
+          <div class="popup__content">
+              <img src="./images/close.svg" alt="" class="popup__close">
+              <h3 class="popup__title">Новый аватар</h3>
+              <form novalidate class="popup__form" name="ava">
+                  <div class="input__container">
+                      <input id="url-ava" type="url" name="link" required class="popup__input popup__input_type_link-url" placeholder="Ссылка на аватар">
+                      <span id="error-url-ava" class="error-message error-message__hidden"></span>
+                  </div>
+                  <button type="submit" class="button popup__button">+</button>
+              </form>
+          </div>
+      </template>
+
+
 
   </div>
 </body>

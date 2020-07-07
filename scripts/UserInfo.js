@@ -1,16 +1,18 @@
 class UserInfo {
-    constructor(nameNode, aboutNode) {
+    constructor(nameNode, aboutNode, avaNode) {
         this._nameNode = nameNode;
         this._aboutNode = aboutNode;
+        this._avaNode = avaNode;
     }
 
     // метод отрисовки дефолтных имени, информации и аватарки
     renderDefaultInfo(userData) {
         this.name = userData.name;
         this.info = userData.about;
-        userName.textContent = userData.name;
-        userAbout.textContent = userData.about;
-        userAva.style.backgroundImage = `url(${userData.avatar})`;
+        this.ava = userData.avatar;
+        this._nameNode.textContent = this.name;
+        this._aboutNode.textContent = this.info;
+        this._avaNode.style.backgroundImage = `url(${this.ava})`;
     }
 
     // обновление данные внутри экземпляра класса
@@ -24,5 +26,16 @@ class UserInfo {
     updateUserInfo() {
         this._nameNode.textContent = this.name;
         this._aboutNode.textContent = this.info;
+    }
+
+    // обновление данных об аватаре внутри экземпляра класса
+    setAvatar(avatar) {
+        this.ava = avatar;
+        this.updateUserAva();
+    }
+
+    // отображение данных на странице
+    updateUserAva() {
+        this._avaNode.style.backgroundImage = `url(${this.ava})`;
     }
 }

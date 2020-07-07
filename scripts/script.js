@@ -23,7 +23,7 @@ const formValidator = (...arg) => new FormValidator(...arg);
 const imagePopup = new ImagePopup(popupContainer);
 
 // создание экземпляра класса UserInfo
-const userInfo = new UserInfo(userName, userAbout);
+const userInfo = new UserInfo(userName, userAbout, userAva);
 
 // создание экземпляра класса AddCardPopup
 const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator, api);
@@ -37,9 +37,13 @@ const cardList = new Cardlist(document.querySelector('.places-list'), createCard
 // создание экземпляра класса AddCardPopup
 const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, api);
 
+//создание экземпляра класса AvatarPopup
+const avaPopup = new AvatarPopup(popupContainer, userInfo, formValidator, api);
+
 // слушатели событий
 editInfoButton.addEventListener('click', editInfoPopup.open);
 addCardButton.addEventListener('click', addCardPopup.open);
+userAva.addEventListener('click', avaPopup.open);
 
 
 Promise.all([
