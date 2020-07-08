@@ -1,3 +1,5 @@
+// import "../pages/index.css";
+
 // создание переменных для слушателей
 const popupContainer = document.querySelector('.popup-container');
 const editInfoButton = document.querySelector('.user-info__edit-button');
