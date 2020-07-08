@@ -1,4 +1,5 @@
-// import "../pages/index.css";
+// TODO решить вопрос с импортом css в JS
+import "../pages/index.css";
 
 // создание переменных для слушателей
 const popupContainer = document.querySelector('.popup-container');
