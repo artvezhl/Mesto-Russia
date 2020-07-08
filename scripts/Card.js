@@ -1,15 +1,23 @@
-class Card {
-    static _template = document.querySelector('#card-template').content;
+export class Card {
+    // static _template = document.querySelector('#card-template').content;
 
-    constructor(data, popupOpenHandler, api) {
+    constructor(cardTemplate, data, popupOpenHandler, api) {
+        this._cardTemplate = cardTemplate;
         this._data = data;
         this._popupOpenHandler = popupOpenHandler;
         this._api = api;
+        this._setListeners = this._setListeners().bind(this);
+        this._cardLikeHandler = this._cardLikeHandler().bind(this);
+        this._like = this._like().bind(this);
+        this._removeLike = this._removeLike().bind(this);
+        this._removeListeners = this._removeListeners().bind(this);
+        this._remove = this._remove().bind(this);
+
     }
 
     // метод отрисовки карточек с сервера
     create() {
-        this._card = Card._template.cloneNode(true).children[0];
+        this._card = this._cardTemplate.cloneNode(true).children[0];
         this._card.querySelector('.place-card__name').textContent = this._data.name;
         const likeIcon = this._card.querySelector('.place-card__like-icon');
         this._cardLikes = this._card.querySelector('.place-card__like-number');
@@ -51,13 +59,13 @@ class Card {
         return this._card;
     }
 
-    _setListeners = () => {
+    _setListeners() {
         this._card.querySelector('.place-card__like-icon').addEventListener('click', this._cardLikeHandler);
         this._card.querySelector('.place-card__delete-icon').addEventListener('click', this._remove);
         this._card.querySelector('.place-card__image').addEventListener('click', this._popupOpenHandler);
     }
 
-    _cardLikeHandler = (event) => {
+    _cardLikeHandler(event) {
         if (event.target.classList.contains('place-card__like-icon_liked'))
             this._removeLike(event)
         else
@@ -65,7 +73,7 @@ class Card {
     }
 
     // TODO убрать глюк с лайком первой карточки
-    _like = (event) => {
+    _like(event) {
         const currentCard = event.target.closest('div.place-card');
         const cardId = currentCard.getAttribute('data-id');
         event.preventDefault();
@@ -77,7 +85,7 @@ class Card {
             .catch(err => console.log(err));
     }
 
-    _removeLike = (event) => {
+    _removeLike(event) {
         const currentCard = event.target.closest('div.place-card');
         const cardId = currentCard.getAttribute('data-id');
         event.preventDefault();
@@ -89,13 +97,13 @@ class Card {
             .catch(err => console.log(err));
     }
 
-    _removeListeners = () => {
+    _removeListeners() {
         this._card.querySelector('.place-card__like-icon').removeEventListener('click', this._like);
         this._card.querySelector('.place-card__delete-icon').removeEventListener('click', this._remove);
         this._card.querySelector('.place-card__image').removeEventListener('click', this._popupOpenHandler);
     }
 
-    _remove = (event) => {
+    _remove(event) {
         event.stopPropagation();
         event.preventDefault();
         const placesList = event.target.closest('.places-list');

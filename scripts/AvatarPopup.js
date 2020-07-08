@@ -1,15 +1,21 @@
-class AvatarPopup extends Popup {
-    static _template = document.querySelector('#change-avatar-popup').content;
+import {Popup} from './Popup.js';
+// import {FormValidator as formValidator} from "./FormValidator.js";
 
-    constructor(popupContainer, userInfo, formValidator, api) {
+export class AvatarPopup extends Popup {
+    // static _template = document.querySelector('#change-avatar-popup').content;
+
+    constructor(popupContainer, userInfo, avatarTemplate, formValidator, api) {
         super(popupContainer);
-        this._popupContent = AvatarPopup._template.cloneNode(true).children[0];
+        this._popupContent = avatarTemplate.cloneNode(true).children[0];
         this._userInfo = userInfo;
         this.formValidator = formValidator;
         this._api = api;
+        this.open = this.open().bind(this);
+        this._handleChangeAvaSubmit = this._handleChangeAvaSubmit().bind(this);
+        this.close = this.close().bind(this);
     }
 
-    open = () => {
+    open() {
         super.open();
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
@@ -19,7 +25,7 @@ class AvatarPopup extends Popup {
         this.form.querySelector('.button').setAttribute('disabled', 'true');
     }
 
-    _handleChangeAvaSubmit = (event) => {
+    _handleChangeAvaSubmit(event) {
         event.preventDefault();
         console.log(this.form.link.value);
         this._api.changeAvatar(`${this.form.link.value}`)
@@ -35,7 +41,7 @@ class AvatarPopup extends Popup {
         this.form.reset();
     }
 
-    close = () => {
+    close() {
         super.close();
         this._container.removeChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').removeEventListener('click', this.close);

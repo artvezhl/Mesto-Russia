@@ -1,13 +1,14 @@
-class Cardlist {
-    constructor(container, card, openPopupMethod, api) {
+export class Cardlist {
+    constructor(container, card, cardTemplate, openPopupMethod, api) {
         this._container = container;
         this._card = card;
+        this.cardTemplate = cardTemplate;
         this._openPopupMethod = openPopupMethod;
         this.api = api;
     }
 
     addCard(data) {
-        this._container.appendChild(this._card(data, this._openPopupMethod, this.api).create());
+        this._container.appendChild(this._card(this.cardTemplate, data, this._openPopupMethod, this.api).create());
         this._container.querySelector('.place-card').setAttribute('data-id', `${data._id}`);
     }
 

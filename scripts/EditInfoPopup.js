@@ -1,15 +1,22 @@
-class EditInfoPopup extends Popup {
-    static _template = document.querySelector('#edit-info-popup').content;
+import {Popup} from './Popup.js';
+// import {FormValidator as formValidator} from "./FormValidator.js";
 
-    constructor(popupContainer, userInfoObj, formValidator, api) {
+export class EditInfoPopup extends Popup {
+    // static _template = document.querySelector('#edit-info-popup').content;
+
+    constructor(popupContainer, editInfoTemplate, userInfoObj, formValidator, api) {
         super(popupContainer);
-        this._popupContent = EditInfoPopup._template.cloneNode(true).children[0];
+        this._popupContent = editInfoTemplate.cloneNode(true).children[0];
         this.userInfoObj = userInfoObj;
         this.formValidator = formValidator;
         this._api = api;
+        this.open = this.open().bind(this);
+        this._setListeners = this._setListeners().bind(this);
+        this._handleEditFormSubmit = this._handleEditFormSubmit().bind(this);
+        this.close = this.close().bind(this);
     }
 
-    open = () => {
+    open() {
         super.open();
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
@@ -23,11 +30,11 @@ class EditInfoPopup extends Popup {
         this.form.querySelector('.button').setAttribute('disabled', 'true');
     }
 
-    _setListeners = () => {
+    _setListeners() {
         this.form.addEventListener('submit', this._handleEditFormSubmit);
     }
 
-    _handleEditFormSubmit = (event) => {
+    _handleEditFormSubmit(event) {
         event.preventDefault();
         const buttonText = document.querySelector('.popup__button_place_profile');
         buttonText.textContent = 'Загрузка...';
@@ -40,7 +47,7 @@ class EditInfoPopup extends Popup {
         .catch(err => console.log(err));
     }
 
-    close = () => {
+    close() {
         super.close();
         this._container.removeChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').removeEventListener('click', this.close);

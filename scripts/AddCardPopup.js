@@ -1,15 +1,21 @@
-class AddCardPopup extends Popup {
-    static _template = document.querySelector('#add-card-popup').content;
+import {Popup} from './Popup.js';
+// import {FormValidator as formValidator} from "./FormValidator.js";
 
-    constructor(popupContainer, cardlist, formValidator, api) {
+export class AddCardPopup extends Popup {
+    // static _template = document.querySelector('#add-card-popup').content;
+
+    constructor(popupContainer, cardlist, addCardTemplate, formValidator, api) {
         super(popupContainer);
-        this._popupContent = AddCardPopup._template.cloneNode(true).children[0];
+        this._popupContent = addCardTemplate.cloneNode(true).children[0];
         this.cardlist = cardlist;
         this.formValidator = formValidator;
         this._api = api;
+        this.open = this.open().bind(this);
+        this._handleAddCardSubmit = this._handleAddCardSubmit().bind(this);
+        this.close = this.close().bind(this);
     }
 
-    open = () => {
+    open () {
         super.open();
         this._container.appendChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').addEventListener('click', this.close);
@@ -19,7 +25,7 @@ class AddCardPopup extends Popup {
         this.form.querySelector('.button').setAttribute('disabled', 'true');
     }
 
-    _handleAddCardSubmit = (event) => {
+    _handleAddCardSubmit (event) {
         event.preventDefault();
         const buttonText = document.querySelector('.popup__button');
         buttonText.textContent = 'Загрузка...';
@@ -37,7 +43,7 @@ class AddCardPopup extends Popup {
         this.form.reset();
     }
 
-    close = () => {
+    close() {
         super.close();
         this._container.removeChild(this._popupContent);
         this._popupContent.querySelector('.popup__close').removeEventListener('click', this.close);

@@ -1,7 +1,8 @@
-class FormValidator {
+export class FormValidator {
 
     constructor(form) {
         this._form = form;
+        this.setEventListeners = this.setEventListeners().bind(this);
     }
 
     checkInputValidity(event) {
@@ -25,7 +26,7 @@ class FormValidator {
         submitButton.disabled = !this._form.checkValidity();
     }
 
-    setEventListeners = () => {
+    setEventListeners() {
         this._form.addEventListener('input', (event) => {
             this.checkInputValidity(event);
             this.setSubmitButtonState();
