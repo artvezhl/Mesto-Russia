@@ -29,7 +29,7 @@ module.exports = {
     {
       test: /\.(png|jpe?g|gif|ico|svg)$/,
       use: [
-        'file-loader?name=./images/[name].[ext]', // указали папку, куда складывать изображения
+        'file-loader?name=./images/[name].[ext]',
         {
           loader: 'image-webpack-loader',
           options: {}
@@ -37,7 +37,7 @@ module.exports = {
       ]
     },
     // {
-    // test: /\.(png|jpe?g|gif)$/i,
+    // test: /\.(png|jpe?g|gif|svg)$/i,
     // use: [
     //     {
     //       loader: 'file-loader',

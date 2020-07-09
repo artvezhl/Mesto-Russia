@@ -1,24 +1,15 @@
-// TODO решить вопрос с импортом css в JS
 import "../pages/index.css";
 
-// создание переменных для слушателей
-const popupContainer = document.querySelector('.popup-container');
-const editInfoButton = document.querySelector('.user-info__edit-button');
-const addCardButton = document.querySelector('.user-info__button');
-const userName = document.querySelector('.user-info__name');
-const userAbout = document.querySelector('.user-info__job');
-const userAva = document.querySelector('.user-info__photo');
-const apiConfig = {
-    baseUrl: 'https://praktikum.tk/cohort11',
-    headers: {
-        authorization: '6a4cb1c5-9817-4f1e-b991-c86219eada0b',
-        'Content-Type': 'application/json'
-    }
-}
+// импорт переменных
+import {popupContainer, editInfoButton, addCardButton, userName, userAbout, userAva, apiConfig} from "./variables.js";
 
+// импорт класса Api
+import {Api} from "./Api.js";
 // создание экземпляра класса Api
 const api = new Api(apiConfig);
 
+// импорт класса FormValidator
+import {FormValidator} from "./FormValidator.js";
 // создание экземпляра класса FormValidator
 const formValidator = (...arg) => new FormValidator(...arg);
 
