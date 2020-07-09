@@ -10,10 +10,11 @@ export class Popup {
     open() {
        this._toggle();
        // TODO сделать закрытие на пустую область и на кнопку esc (keycode = 27)
-       window.addEventListener('keydown', (e) => {
-           if (e.keyCode == 27)
-               this.close();
-       });
+       //  this._container.addEventListener('keydown', (e) => {
+       //     if (e.keyCode == 27)
+       //         debugger;
+       //         this.close();
+       // });
     }
 
     /* Можно лучше:
@@ -24,9 +25,9 @@ export class Popup {
 	*/
     close() {
         this._toggle();
-        window.removeEventListener('keydown', (e) => {
-            if (e.keyCode == 27)
-                this.close();
-        });
+        // window.removeEventListener('keydown', (e) => {
+        //     if (e.keyCode == 27)
+        //         this.close();
+        // });
     }
 }
