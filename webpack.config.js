@@ -22,28 +22,31 @@ module.exports = {
       test: /\.css$/i,
       use: [
         (isDev ? 'style-loader' : MiniCssExtractPlugin.loader),
-        'css-loader',
+        {
+          loader:'css-loader',
+          options: {
+            importLoaders: 2
+          }
+        },
         'postcss-loader'
       ]
     },
     {
       test: /\.(png|jpe?g|gif|ico|svg)$/,
       use: [
-        'file-loader?name=./images/[name].[ext]',
+        {
+          loader: 'file-loader',
+          options: {
+            name: './images/[name].[ext]',
+            esModule: false
+          }
+        },
         {
           loader: 'image-webpack-loader',
           options: {}
         },
       ]
     },
-    // {
-    // test: /\.(png|jpe?g|gif|svg)$/i,
-    // use: [
-    //     {
-    //       loader: 'file-loader',
-    //     },
-    //   ],
-    // },
     {
       test: /\.(eot|ttf|woff|woff2)$/,
       loader: 'file-loader?name=./vendor/[name].[ext]'
