@@ -1,50 +1,50 @@
-import "../pages/index.css";
+import "./pages/index.css";
 
 // импорт переменных
-import {popupContainer, editInfoButton, addCardButton, userName, userAbout, userAva, apiConfig} from "./variables.js";
+import {popupContainer, editInfoButton, addCardButton, userName, userAbout, userAva, apiConfig} from "./scripts/variables.js";
 
 // импорт класса Api
-import {Api} from "./Api.js";
+import {Api} from "./scripts/Api.js";
 // создание экземпляра класса Api
 const api = new Api(apiConfig);
 
 // импорт класса FormValidator
-import {FormValidator} from "./FormValidator.js";
+import {FormValidator} from "./scripts/FormValidator.js";
 // создание экземпляра класса FormValidator
 const formValidator = (...arg) => new FormValidator(...arg);
 
 // импорт класса ImagePopup
-import {ImagePopup} from "./Image-popup.js"
+import {ImagePopup} from "./scripts/Image-popup.js"
 // создание экземпляра класса ImagePopup
 const imagePopup = new ImagePopup(popupContainer);
 
 // импорт класса UserInfo
-import {UserInfo} from "./UserInfo.js";
+import {UserInfo} from "./scripts/UserInfo.js";
 // создание экземпляра класса UserInfo
 const userInfo = new UserInfo(userName, userAbout, userAva);
 
 // импорт класса EditInfoPopup
-import {EditInfoPopup} from "./EditInfoPopup.js";
+import {EditInfoPopup} from "./scripts/EditInfoPopup.js";
 // создание экземпляра класса EditInfoPopup
 const editInfoPopup = new EditInfoPopup(popupContainer, userInfo, formValidator, api);
 
 // импорт класса Card
-import {Card} from "./Card.js";
+import {Card} from "./scripts/Card.js";
 // создание экземпляра класса Card без аргументов
 const createCard = (...arg) => new Card(...arg);
 
 // импорт класса Cardlist
-import {Cardlist} from "./Cardlist.js";
+import {Cardlist} from "./scripts/Cardlist.js";
 // создание экземпляра Cardlist
 const cardList = new Cardlist(document.querySelector('.places-list'), createCard, imagePopup.open, api);
 
 // импорт класса AddCardPopup
-import {AddCardPopup} from "./AddCardPopup.js";
+import {AddCardPopup} from "./scripts/AddCardPopup.js";
 // создание экземпляра класса AddCardPopup
 const addCardPopup = new AddCardPopup(popupContainer, cardList, formValidator, api);
 
 // импорт класса AvatarPopup
-import {AvatarPopup} from "./AvatarPopup.js";
+import {AvatarPopup} from "./scripts/AvatarPopup.js";
 //создание экземпляра класса AvatarPopup
 const avaPopup = new AvatarPopup(popupContainer, userInfo, formValidator, api);
 

@@ -7,7 +7,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  entry: { main: './scripts/script.js' },
+  entry: { main: './src/script.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].js'
@@ -68,7 +68,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       // Означает, что:
       inject: false, // стили НЕ нужно прописывать внутри тегов
-      template: './index.html', // откуда брать образец для сравнения с текущим видом проекта
+      template: './src/index.html', // откуда брать образец для сравнения с текущим видом проекта
       filename: 'index.html' // имя выходного файла, то есть того, что окажется в папке dist после сборки
     }),
     new WebpackMd5Hash()

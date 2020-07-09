@@ -1,4 +1,4 @@
-@import url(./__hidden/error-message__hidden.css);
+@import url(__hidden/error-message__hidden.css);
 
 .error-message {
     color: #FF0000;
