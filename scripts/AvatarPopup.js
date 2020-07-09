@@ -1,4 +1,6 @@
-class AvatarPopup extends Popup {
+import {Popup} from "./Popup.js";
+
+export class AvatarPopup extends Popup {
     static _template = document.querySelector('#change-avatar-popup').content;
 
     constructor(popupContainer, userInfo, formValidator, api) {

@@ -1,4 +1,6 @@
-class AddCardPopup extends Popup {
+import {Popup} from "./Popup.js";
+
+export class AddCardPopup extends Popup {
     static _template = document.querySelector('#add-card-popup').content;
 
     constructor(popupContainer, cardlist, formValidator, api) {

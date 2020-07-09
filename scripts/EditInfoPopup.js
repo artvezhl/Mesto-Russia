@@ -1,4 +1,6 @@
-class EditInfoPopup extends Popup {
+import {Popup} from "./Popup.js";
+
+export class EditInfoPopup extends Popup {
     static _template = document.querySelector('#edit-info-popup').content;
 
     constructor(popupContainer, userInfoObj, formValidator, api) {

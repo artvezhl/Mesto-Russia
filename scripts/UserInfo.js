@@ -1,4 +1,4 @@
-class UserInfo {
+export class UserInfo {
     constructor(nameNode, aboutNode, avaNode) {
         this._nameNode = nameNode;
         this._aboutNode = aboutNode;

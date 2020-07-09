@@ -1,4 +1,4 @@
-class Cardlist {
+export class Cardlist {
     constructor(container, card, openPopupMethod, api) {
         this._container = container;
         this._card = card;

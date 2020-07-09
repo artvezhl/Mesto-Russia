@@ -1,4 +1,4 @@
-class Card {
+export class Card {
     static _template = document.querySelector('#card-template').content;
 
     constructor(data, popupOpenHandler, api) {
