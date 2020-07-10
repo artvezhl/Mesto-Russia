@@ -17,9 +17,12 @@ Yandex Praktikum training project
 - улучшение UX при редактировании профиля и добавлении карточки
 
 ## Стек технологий:
-- HTML
-- CSS
-- JS
+- HTML5
+- CSS3
+- JS ES6
+- OOP
+- Webpack
+- BEM
 
 ## Пакеты которые используются в сборках:
 - [Babel CLI](https://babeljs.io/docs/en/babel-cli#docsNav)
