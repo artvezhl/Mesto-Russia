@@ -1,9 +1,9 @@
 {
   "name": "mesto-russia",
-  "homepage": "https://artvezhl.github.io/Mesto-Russia/",
+  "homepage": "https://github.com/artvezhl/Mesto-Russia#readme",
   "version": "1.0.0",
   "description": "Yandex Praktikum training project",
-  "main": "index.js",
+  "main": "src/script.js",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.4.1"
@@ -39,10 +39,9 @@
     "type": "git",
     "url": "git+https://github.com/artvezhl/Mesto-Russia.git"
   },
-  "author": "",
+  "author": "artvezhl",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/artvezhl/Mesto-Russia/issues"
-  },
-  "homepage": "https://github.com/artvezhl/Mesto-Russia#readme"
+  }
 }
